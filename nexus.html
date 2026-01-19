@@ -1,0 +1,705 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Nexus PM | Case Study</title>
+    
+    <link href="https://unpkg.com/aos@2.3.1/dist/aos.css" rel="stylesheet">
+    
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@300;400;500;700;800&family=JetBrains+Mono:wght@400;500&display=swap" rel="stylesheet">
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
+    
+    <script src="https://unpkg.com/lucide@latest"></script>
+    <script src="https://cdn.jsdelivr.net/npm/alpinejs@3.x.x/dist/cdn.min.js" defer></script>
+
+    <style>
+        /* --- CORE VARIABLES --- */
+        :root {
+            --bg-dark: #030304;
+            --bg-card: rgba(255, 255, 255, 0.02);
+            --border-color: rgba(255, 255, 255, 0.08);
+            --text-main: #ffffff;
+            --text-muted: #94969f;
+            --accent-purple: #7000ff;
+            --accent-cyan: #00e0ff;
+            --font-main: 'Plus Jakarta Sans', sans-serif;
+            --font-code: 'JetBrains Mono', monospace;
+        }
+
+        * { margin: 0; padding: 0; box-sizing: border-box; }
+
+        body {
+            background-color: var(--bg-dark);
+            color: var(--text-main);
+            font-family: var(--font-main);
+            overflow-x: hidden;
+            -webkit-font-smoothing: antialiased;
+        }
+
+        .noise-overlay {
+            position: fixed; top: 0; left: 0; width: 100%; height: 100%;
+            pointer-events: none; z-index: 9999; opacity: 0.04;
+            background: url("https://grainy-gradients.vercel.app/noise.svg");
+        }
+
+        /* --- GLOBAL UTILS --- */
+        .container { max-width: 1200px; margin: 0 auto; padding: 0 5%; }
+        .section { margin-bottom: 8rem; }
+        .grid-sidebar { display: grid; grid-template-columns: 3fr 1.5fr; gap: 4rem; align-items: start; }
+        .grid-3 { display: grid; grid-template-columns: repeat(3, 1fr); gap: 2rem; }
+
+        /* Typography */
+        h1, h2, h3, h4 { color: #fff; margin-bottom: 1rem; }
+        p { color: var(--text-muted); line-height: 1.7; margin-bottom: 1.5rem; font-size: 1.05rem; }
+        .section-title { font-size: 2.5rem; font-weight: 700; text-align: center; margin-bottom: 1rem; }
+        .section-desc { font-size: 1.1rem; text-align: center; max-width: 800px; margin: 0 auto 4rem auto; color: var(--text-muted); }
+
+        /* --- NAVIGATION --- */
+        nav {
+            display: flex; justify-content: space-between; align-items: center;
+            padding: 2rem 5%; position: absolute; width: 100%; top: 0; z-index: 100;
+        }
+        .logo { font-weight: 800; font-size: 1.25rem; letter-spacing: -0.5px; color: white; text-decoration: none;}
+        .btn-glass {
+            padding: 10px 24px; border-radius: 100px; background: rgba(255, 255, 255, 0.05);
+            border: 1px solid var(--border-color); color: #fff; font-size: 0.8rem; font-weight: 600;
+            text-decoration: none; transition: 0.3s; cursor: pointer;
+        }
+        .btn-glass:hover { background: rgba(255,255,255,0.15); border-color: #fff; }
+        
+        /* --- HERO --- */
+        .project-hero {
+            padding: 10rem 5% 6rem 5%; text-align: center; position: relative;
+        }
+        .project-hero h1 {
+            font-size: clamp(3rem, 7vw, 6rem); font-weight: 800; margin-bottom: 1.5rem;
+            background: linear-gradient(180deg, #fff 0%, #aaa 100%);
+            -webkit-background-clip: text; -webkit-text-fill-color: transparent;
+            line-height: 1.1; letter-spacing: -2px;
+        }
+        .project-hero p {
+            font-size: 1.2rem; color: var(--text-muted); line-height: 1.6; max-width: 800px; margin: 0 auto;
+        }
+
+        /* --- CARDS --- */
+        .info-card {
+            background: var(--bg-card); border: 1px solid var(--border-color);
+            border-radius: 20px; padding: 2rem;
+        }
+        .sticky-card { position: sticky; top: 100px; }
+
+        .meta-list li { margin-bottom: 1rem; color: #ccc; display: flex; align-items: flex-start; gap: 10px; }
+        .meta-label { font-size: 0.75rem; text-transform: uppercase; color: #666; font-weight: 700; display: block; margin-bottom: 2px; font-family: var(--font-code); }
+        .goals-list li { display: flex; align-items: flex-start; gap: 12px; margin-bottom: 1rem; color: #ccc; }
+        .goals-list i { color: var(--accent-purple); flex-shrink: 0; margin-top: 4px; }
+
+        /* --- PERSONAS --- */
+        .persona-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 2rem; margin-top: 2rem; }
+        .persona-card { 
+            background: var(--bg-card); padding: 2.5rem; border-radius: 20px; border: 1px solid var(--border-color); 
+            display: flex; flex-direction: column; justify-content: space-between; transition: transform 0.3s;
+        }
+        .persona-card:hover { border-color: rgba(255,255,255,0.15); transform: translateY(-5px); }
+        .persona-header { display: flex; align-items: center; gap: 1rem; margin-bottom: 1.5rem; }
+        .persona-avatar { 
+            width: 64px; height: 64px; border-radius: 50%; 
+            background: linear-gradient(135deg, var(--accent-purple), #1a0b38); 
+            display: flex; align-items: center; justify-content: center;
+            font-size: 1.5rem; font-weight: 700; color: #fff; border: 1px solid rgba(255,255,255,0.1);
+        }
+        .persona-avatar.secondary { background: linear-gradient(135deg, var(--accent-cyan), #002a4d); }
+        .persona-role { color: var(--accent-purple); font-size: 0.85rem; font-family: var(--font-code); display: block; margin-top: 4px; }
+        .persona-quote { font-style: italic; color: #ccc; line-height: 1.6; font-size: 1.05rem; border-left: 2px solid var(--accent-cyan); padding-left: 1rem; margin: 0; }
+
+        /* --- CHALLENGES --- */
+        .challenge-card { 
+            background: var(--bg-card); /* Dark BG */
+            border: 1px solid var(--border-color); 
+            border-radius: 20px; 
+            padding: 2rem; 
+        }
+        .challenge-card i { margin-bottom: 1rem; color: var(--accent-purple); display: block; width: 32px; height: 32px; }
+        .challenge-card h4 { color: #fff; margin-bottom: 0.5rem; font-size: 1.2rem; }
+        .challenge-card p { margin: 0; font-size: 0.95rem; color: var(--text-muted); }
+
+        /* --- COMPETITIVE TABLE --- */
+        .table-scroll { overflow-x: auto; padding-bottom: 1rem; position: relative; margin-bottom: 2rem; }
+        .comparison-table { width: 100%; border-collapse: collapse; color: #ccc; min-width: 800px; }
+        .comparison-table th { text-align: center; padding: 1.5rem 1rem; border-bottom: 1px solid var(--border-color); color: #666; font-family: var(--font-code); text-transform: uppercase; font-size: 0.8rem; }
+        .comparison-table th:first-child { text-align: left; color: var(--accent-purple); }
+        .comparison-table td { padding: 1.5rem 1rem; border-bottom: 1px solid rgba(255,255,255,0.03); text-align: center; }
+        .comparison-table td:first-child { text-align: left; font-weight: 600; color: #fff; }
+        .nexus-col { background: rgba(138, 63, 252, 0.1); color: var(--accent-purple) !important; border-radius: 8px 8px 0 0; }
+        .nexus-cell { background: rgba(138, 63, 252, 0.05); color: #fff; font-weight: bold; }
+        .check { color: #00e0ff; }
+        .cross { color: #ff3366; opacity: 0.5; }
+
+        /* --- IA TREE --- */
+        .ia-wrapper { position: relative; background: var(--bg-card); border-radius: 16px; padding: 3rem; border: 1px solid var(--border-color); }
+        .ia-scroll { overflow-x: auto; display: flex; justify-content: flex-start; padding-bottom: 20px; }
+        .ia-tree { display: table; margin: 0 auto; padding: 20px; min-width: max-content; }
+        .ia-tree ul { padding-top: 20px; position: relative; display: flex; justify-content: center; gap: 40px; }
+        .ia-tree li { float: left; text-align: center; list-style-type: none; position: relative; padding: 20px 10px 0 10px; }
+        
+        /* Connector Lines */
+        .ia-tree li::before, .ia-tree li::after {
+            content: ''; position: absolute; top: 0; right: 50%;
+            border-top: 1px solid rgba(255,255,255,0.4); width: 50%; height: 20px;
+        }
+        .ia-tree li::after { right: auto; left: 50%; border-left: 1px solid rgba(255,255,255,0.4); }
+        .ia-tree li:only-child::after, .ia-tree li:only-child::before { display: none; }
+        .ia-tree li:only-child { padding-top: 0; }
+        .ia-tree li:first-child::before { border: 0 none; }
+        .ia-tree li:last-child::after { border: 0 none; }
+        .ia-tree li:last-child::before { border-right: 1px solid rgba(255,255,255,0.4); border-radius: 0 5px 0 0; }
+        .ia-tree li:first-child::after { border-radius: 5px 0 0 0; }
+        .ia-tree ul ul::before {
+            content: ''; position: absolute; top: 0; left: 50%;
+            border-left: 1px solid rgba(255,255,255,0.4); width: 0; height: 20px;
+        }
+
+        .ia-node {
+            padding: 10px 18px; background: #0a0a0a; border: 1px solid var(--border-color);
+            border-radius: 8px; color: #fff; font-size: 0.85rem; white-space: nowrap; display: inline-block;
+            font-family: var(--font-code); z-index: 2; position: relative;
+        }
+        .ia-node.root { background: var(--accent-purple); border-color: var(--accent-purple); font-weight: 700; box-shadow: 0 0 15px rgba(138, 63, 252, 0.4); }
+
+        /* --- USER FLOWS --- */
+        .tab-nav { display: flex; justify-content: center; gap: 1rem; margin-bottom: 2rem; flex-wrap: wrap; }
+        .tab-btn { background: transparent; border: 1px solid rgba(255,255,255,0.1); color: #888; padding: 10px 24px; border-radius: 50px; cursor: pointer; transition: 0.3s; }
+        .tab-btn.active { background: var(--accent-purple); color: white; border-color: var(--accent-purple); }
+        .flow-container { background: var(--bg-card); padding: 3rem; border-radius: 16px; border: 1px solid var(--border-color); overflow-x: auto; position: relative; }
+        .flow-diagram { display: flex; align-items: center; min-width: max-content; gap: 4rem; justify-content: center; }
+        .flow-step { display: flex; flex-direction: column; align-items: center; text-align: center; width: 140px; position: relative; }
+        .step-icon { width: 60px; height: 60px; background: rgba(138, 63, 252, 0.1); border: 1px solid rgba(138, 63, 252, 0.3); border-radius: 50%; display: flex; align-items: center; justify-content: center; margin-bottom: 1rem; color: #fff; }
+        .flow-step p { font-size: 0.8rem; color: #ccc; margin: 0; }
+        .flow-step:not(:last-child)::after { content: '→'; position: absolute; right: -40px; top: 20px; color: #666; font-size: 1.2rem; }
+
+        /* --- LO-FI CARDS --- */
+        .lofi-card { 
+            background: var(--bg-card); border-radius: 16px; padding: 1.5rem; 
+            border: 1px solid var(--border-color); transition: transform 0.3s;
+        }
+        .lofi-card:hover { transform: translateY(-5px); border-color: rgba(255,255,255,0.2); }
+        .lofi-img { width: 100%; height: auto; border-radius: 8px; border: 1px solid var(--border-color); margin-bottom: 1.5rem; opacity: 0.7; transition: 0.3s; }
+        .lofi-card:hover .lofi-img { opacity: 1; }
+        .lofi-card h4 { color: #fff; font-size: 1.1rem; margin-bottom: 0.5rem; font-weight: 600; }
+
+        /* --- VISUAL SYSTEM --- */
+        .visual-card { background: var(--bg-card); border: 1px solid var(--border-color); border-radius: 20px; padding: 3rem; }
+        .style-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 4rem; }
+        .font-inter { font-family: 'Inter', sans-serif; color: #fff; }
+        .type-row { margin-bottom: 1.5rem; border-bottom: 1px solid var(--border-color); padding-bottom: 1rem; }
+        .type-label { font-size: 0.75rem; color: #666; display: block; margin-bottom: 0.5rem; text-transform: uppercase; letter-spacing: 1px; font-family: var(--font-code); }
+        .color-swatch { width: 60px; height: 60px; border-radius: 12px; margin-bottom: 0.5rem; border: 1px solid rgba(255,255,255,0.1); }
+        .colors-flex { display: flex; gap: 1.5rem; flex-wrap: wrap; }
+
+        /* --- PROTOTYPE --- */
+        .proto-wrapper { background: #1e293b; border-radius: 12px; overflow: hidden; border: 1px solid var(--border-color); }
+        .proto-bar { padding: 10px; background: rgba(255,255,255,0.05); display: flex; justify-content: flex-end; gap: 10px; border-bottom: 1px solid var(--border-color); }
+        .bar-btn { font-size: 0.75rem; color: #ccc; background: transparent; border: none; cursor: pointer; display: flex; align-items: center; gap: 5px; padding: 5px 10px; border-radius: 4px; }
+        .bar-btn:hover { background: rgba(255,255,255,0.1); color: #fff; }
+        .proto-frame { width: 100%; height: 700px; border: none; background: #111; }
+
+        /* --- FOOTER --- */
+        footer { background: #000; padding-top: 5rem; border-top: 1px solid var(--border-color); font-size: 0.9rem; }
+        .footer-cta { text-align: center; padding-bottom: 5rem; border-bottom: 1px solid rgba(255,255,255,0.05); margin-bottom: 4rem; }
+        .footer-grid { max-width: 1200px; margin: 0 auto; padding: 0 5% 4rem 5%; display: grid; grid-template-columns: 2fr 1fr 1fr 1fr; gap: 3rem; }
+        .footer-col h4 { color: #fff; margin-bottom: 1.5rem; font-size: 1rem; }
+        .footer-col ul { list-style: none; padding: 0; }
+        .footer-col ul li { margin-bottom: 0.8rem; }
+        .footer-col ul li a { color: #888; transition: 0.3s; text-decoration: none; cursor: pointer; }
+        .footer-col ul li a:hover { color: #fff; }
+        .footer-bottom { max-width: 1200px; margin: 0 auto; padding: 2rem 5%; border-top: 1px solid rgba(255,255,255,0.05); display: flex; justify-content: space-between; color: #444; font-size: 0.8rem; }
+
+        /* Swipe Overlay - DEFAULT HIDDEN */
+        .swipe-affordance { 
+            display: none; /* JS will toggle to flex if needed */
+            position: absolute; inset: 0; background: rgba(0,0,0,0.6); backdrop-filter: blur(4px); flex-direction: column; align-items: center; justify-content: center; color: #fff; font-weight: 600; cursor: pointer; z-index: 10; transition: opacity 0.3s; 
+        }
+        .swipe-icon { font-size: 2rem; margin-bottom: 0.5rem; animation: pulse 2s infinite; }
+        @keyframes pulse { 0% { opacity: 0.5; transform: scale(0.9); } 50% { opacity: 1; transform: scale(1.1); } 100% { opacity: 0.5; transform: scale(0.9); } }
+
+        /* Modal */
+        .modal { display: none; position: fixed; z-index: 10000; left: 0; top: 0; width: 100%; height: 100%; overflow: auto; background-color: rgba(0,0,0,0.8); backdrop-filter: blur(5px); }
+        .modal.active { display: flex; justify-content: center; align-items: center; }
+        .modal-content { background: #111; border: 1px solid #333; padding: 2rem; border-radius: 12px; color: #ccc; max-width: 600px; margin: auto; position: relative; }
+        .close-btn { position: absolute; top: 1rem; right: 1rem; color: #fff; cursor: pointer; font-size: 1.5rem; }
+        .form-group { margin-bottom: 1.5rem; }
+        .form-label { display: block; margin-bottom: 0.5rem; font-size: 0.9rem; color: #ccc; }
+        .form-input, .form-textarea { width: 100%; padding: 12px 15px; border-radius: 8px; background: rgba(255,255,255,0.05); border: 1px solid rgba(255,255,255,0.1); color: #fff; transition: 0.3s; }
+        .form-textarea { min-height: 120px; resize: vertical; }
+        .btn-primary { 
+            padding: 12px 28px; border-radius: 100px; background: #ffffff; color: #000000; 
+            font-size: 0.9rem; font-weight: 700; transition: 0.3s; text-decoration: none; 
+            border: 1px solid #fff; cursor: pointer; display: inline-block;
+        }
+
+        @media (max-width: 900px) {
+            .grid-sidebar, .grid-3, .grid-2, .style-grid, .persona-grid, .footer-grid { grid-template-columns: 1fr; }
+            .hero h1 { font-size: 3rem; }
+            .sticky-card { position: static; }
+            .footer-bottom { flex-direction: column; gap: 1rem; text-align: center; }
+            .flow-step:not(:last-child)::after { display: none; }
+            .flow-diagram { gap: 3rem; }
+        }
+    </style>
+</head>
+<body x-data="{ activeTab: 'simulation' }">
+
+    <div class="noise-overlay"></div>
+
+    <nav>
+        <a href="index.html" class="logo">Core <span>& Pixel</span></a>
+        <button class="btn-glass modal-trigger" style="font-size: 0.8rem;">Get in Touch</button>
+    </nav>
+
+    <header class="project-hero" data-aos="fade-up">
+        <a href="index.html#work" style="color: var(--accent-purple); display: inline-flex; align-items: center; gap: 5px; margin-bottom: 1rem; font-size: 0.9rem; text-decoration: none;">
+            <i data-lucide="arrow-left" style="width: 16px;"></i> Back to All Projects
+        </a>
+        <h1>Nexus PM</h1>
+        <p>An AI-powered project management command center designed to predict risks, optimize team capacity, and provide a clear, unified view of project health.</p>
+    </header>
+
+    <div class="container">
+        
+        <section class="section grid-sidebar">
+            <div data-aos="fade-right">
+                <h2 style="font-size: 2.5rem; margin-bottom: 1.5rem;">The Problem</h2>
+                <p>Modern project management is a chaotic dance of spreadsheets and reactive fire-fighting. PMs are drowning in data but starved for wisdom. Traditional tools are reactive, showing problems only after they occur. This forces teams into a constant cycle of firefighting, leading to <strong>budget overruns, missed deadlines, and severe team burnout.</strong></p>
+                
+                <h3 style="margin-top: 2rem; font-size: 1.5rem;">Project Goals</h3>
+                <ul class="goals-list">
+                    <li><i data-lucide="check"></i> <span>Shift from reactive to predictive management.</span></li>
+                    <li><i data-lucide="check"></i> <span>Create a single source of truth for portfolio health.</span></li>
+                    <li><i data-lucide="check"></i> <span>Empower data-driven decisions via impact simulation.</span></li>
+                </ul>
+            </div>
+
+            <div class="info-card sticky-card" data-aos="fade-left">
+                <h4 style="color: #666; font-size: 0.75rem; text-transform: uppercase; margin-bottom: 1rem; font-weight: 700;">Project Type</h4>
+                <p style="color:#fff; font-weight: 600; margin-bottom: 2rem;">Internal Concept</p>
+
+                <h4 style="color: #666; font-size: 0.75rem; text-transform: uppercase; margin-bottom: 1rem; font-weight: 700;">Our Role</h4>
+                <ul class="meta-list">
+                    <li><i data-lucide="search"></i> <span>Strategy & Research</span></li>
+                    <li><i data-lucide="pen-tool"></i> <span>UX/UI Design</span></li>
+                    <li><i data-lucide="code"></i> <span>Frontend Dev</span></li>
+                </ul>
+
+                <h4 style="color: #666; font-size: 0.75rem; text-transform: uppercase; margin-top: 2rem; margin-bottom: 0.5rem; font-weight: 700;">Timeline</h4>
+                <p style="color:#fff; margin-bottom: 1rem;">4 Week Sprint</p>
+
+                <h4 style="color: #666; font-size: 0.75rem; text-transform: uppercase; margin-bottom: 0.5rem; font-weight: 700;">Tools</h4>
+                <p style="color:#fff; margin-bottom: 0;">Figma, React, AI</p>
+            </div>
+        </section>
+
+        <section class="section">
+            <h2 class="section-title">01. Research & Discovery</h2>
+            <p class="section-desc">We analyzed existing tools to identify gaps. Most tools log history; we wanted to predict the future.</p>
+
+            <h3 style="text-align:center; margin-bottom: 2rem;">Competitive Analysis</h3>
+            
+            <div class="info-card" style="padding: 0; overflow: hidden; margin-bottom: 2rem;">
+                <div class="table-scroll" id="ca-scroll-container" style="margin:0;">
+                    <table class="comparison-table">
+                        <thead>
+                            <tr>
+                                <th>Feature</th>
+                                <th>Jira</th>
+                                <th>Asana</th>
+                                <th>Monday</th>
+                                <th class="nexus-col">Nexus PM</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            <tr>
+                                <td>Predictive Risk Analysis</td>
+                                <td class="cross"><i data-lucide="x-circle" style="width:20px;"></i></td>
+                                <td class="cross"><i data-lucide="x-circle" style="width:20px;"></i></td>
+                                <td class="cross"><i data-lucide="x-circle" style="width:20px;"></i></td>
+                                <td class="nexus-cell"><i data-lucide="check-circle-2" style="width:20px; color: #8A3FFC;"></i></td>
+                            </tr>
+                            <tr>
+                                <td>AI-Driven Insights</td>
+                                <td>Limited</td>
+                                <td>Limited</td>
+                                <td>Limited</td>
+                                <td class="nexus-cell">Core Feature</td>
+                            </tr>
+                            <tr>
+                                <td>Team Capacity Planning</td>
+                                <td>Add-on</td>
+                                <td class="check"><i data-lucide="check-circle-2" style="width:20px;"></i></td>
+                                <td class="check"><i data-lucide="check-circle-2" style="width:20px;"></i></td>
+                                <td class="nexus-cell"><i data-lucide="check-circle-2" style="width:20px; color: #8A3FFC;"></i></td>
+                            </tr>
+                            <tr>
+                                <td>Impact Simulation</td>
+                                <td class="cross"><i data-lucide="x-circle" style="width:20px;"></i></td>
+                                <td class="cross"><i data-lucide="x-circle" style="width:20px;"></i></td>
+                                <td class="cross"><i data-lucide="x-circle" style="width:20px;"></i></td>
+                                <td class="nexus-cell"><i data-lucide="check-circle-2" style="width:20px; color: #8A3FFC;"></i></td>
+                            </tr>
+                        </tbody>
+                    </table>
+                    <div id="ca-swipe" class="swipe-affordance">
+                        <div class="swipe-icon">↔</div>
+                        <span>Swipe to view table</span>
+                        <span style="font-size: 0.8rem; margin-top: 5px; opacity: 0.7;">(Tap to dismiss)</span>
+                    </div>
+                </div>
+            </div>
+
+            <div class="info-card" style="text-align: center; margin-bottom: 4rem;">
+                <h4 style="color: #fff; margin-bottom: 0.5rem;">Key Insight</h4>
+                <p style="margin: 0;">The market is dominated by reactive tools. There is a massive opportunity for a proactive, predictive partner.</p>
+            </div>
+
+            <h3 style="text-align:center; margin-bottom: 2rem;">User Personas</h3>
+            <div class="persona-grid">
+                <div class="persona-card" data-aos="fade-up">
+                    <div class="persona-header">
+                        <div class="persona-avatar">S</div>
+                        <div>
+                            <h4 class="persona-name" style="color:#fff; margin:0;">Sarah</h4>
+                            <span class="persona-role">Strategic PM</span>
+                        </div>
+                    </div>
+                    <p style="color: var(--accent-purple); font-size: 0.9rem; margin-bottom: 1rem;">Manages 5-7 high-stakes projects.</p>
+                    <p class="persona-quote">"I need to see the forest, not just the trees. Give me the one number that tells me if a project is okay."</p>
+                </div>
+                <div class="persona-card" data-aos="fade-up" data-aos-delay="100">
+                    <div class="persona-header">
+                        <div class="persona-avatar secondary">D</div>
+                        <div>
+                            <h4 class="persona-name" style="color:#fff; margin:0;">David</h4>
+                            <span class="persona-role" style="color: var(--accent-cyan);">Team Lead</span>
+                        </div>
+                    </div>
+                    <p style="color: var(--accent-cyan); font-size: 0.9rem; margin-bottom: 1rem;">Leads a team of 8 developers.</p>
+                    <p class="persona-quote">"My team's well-being is priority. I need to protect them from overload without micromanaging."</p>
+                </div>
+            </div>
+        </section>
+
+        <section class="section">
+            <h2 class="section-title">02. Challenges</h2>
+            <p class="section-desc">Designing intelligence requires balancing complexity with trust.</p>
+            <div class="grid-3">
+                <div class="challenge-card" data-aos="fade-up">
+                    <i data-lucide="database"></i>
+                    <h4>Data Complexity</h4>
+                    <p>Unifying disparate data from Jira, Slack, and GitHub without overwhelming the user.</p>
+                </div>
+                <div class="challenge-card" data-aos="fade-up" data-aos-delay="100">
+                    <i data-lucide="shield-check" style="color: var(--accent-cyan);"></i>
+                    <h4>Trust in AI</h4>
+                    <p>Users must understand *why* the AI suggests a course of action.</p>
+                </div>
+                <div class="challenge-card" data-aos="fade-up" data-aos-delay="200">
+                    <i data-lucide="layout" style="color: #fff;"></i>
+                    <h4>Simplicity</h4>
+                    <p>Presenting complex simulations in an immediately actionable way.</p>
+                </div>
+            </div>
+        </section>
+
+        <section class="section">
+            <h2 class="section-title">03. Structure & Flow</h2>
+            <p class="section-desc">We mapped the application to prioritize "Intelligence" as a core pillar.</p>
+
+            <div class="ia-wrapper relative" data-aos="fade-up">
+                <div class="ia-scroll" id="ia-scroll-container">
+                    <div class="ia-tree" style="min-width: 2000px;">
+                        <ul>
+                            <li>
+                                <div class="ia-node root">Nexus PM</div>
+                                <ul>
+                                    <li>
+                                        <div class="ia-node">Home</div>
+                                        <ul>
+                                            <li><div class="ia-node">AI Daily Briefing</div></li>
+                                            <li><div class="ia-node">Personal Hub</div></li>
+                                            <li><div class="ia-node">Live Feed</div></li>
+                                            <li><div class="ia-node">Recommendations</div></li>
+                                            <li><div class="ia-node">Upcoming Milestones</div></li>
+                                            <li><div class="ia-node">Priority Email</div></li>
+                                        </ul>
+                                    </li>
+                                    <li>
+                                        <div class="ia-node">Projects</div>
+                                        <ul>
+                                            <li><div class="ia-node">All Projects View</div></li>
+                                            <li>
+                                                <div class="ia-node">Project Detail</div>
+                                                <ul>
+                                                    <li><div class="ia-node">AI Summary</div></li>
+                                                    <li><div class="ia-node">Task Board</div></li>
+                                                    <li><div class="ia-node">Budget Analysis</div></li>
+                                                    <li><div class="ia-node">Team Health</div></li>
+                                                    <li><div class="ia-node">Blockers</div></li>
+                                                </ul>
+                                            </li>
+                                        </ul>
+                                    </li>
+                                    <li>
+                                        <div class="ia-node">Goals</div>
+                                        <ul>
+                                            <li><div class="ia-node">Strategic Metrics</div></li>
+                                            <li><div class="ia-node">AI Strategy Summary</div></li>
+                                            <li><div class="ia-node">Objectives</div></li>
+                                        </ul>
+                                    </li>
+                                    <li>
+                                        <div class="ia-node">Intelligence</div>
+                                        <ul>
+                                            <li><div class="ia-node">Health & Forecast</div></li>
+                                            <li><div class="ia-node">Portfolio Risk</div></li>
+                                            <li><div class="ia-node">Budget Tracker</div></li>
+                                            <li><div class="ia-node">Anomaly Detection</div></li>
+                                            <li><div class="ia-node">Simulator</div></li>
+                                        </ul>
+                                    </li>
+                                    <li>
+                                        <div class="ia-node">Activity</div>
+                                        <ul>
+                                            <li><div class="ia-node">AI Weekly Digest</div></li>
+                                            <li><div class="ia-node">Activity Timeline</div></li>
+                                        </ul>
+                                    </li>
+                                     <li>
+                                        <div class="ia-node">Settings</div>
+                                        <ul>
+                                            <li><div class="ia-node">My Profile</div></li>
+                                            <li><div class="ia-node">AI Controls</div></li>
+                                            <li><div class="ia-node">Integrations</div></li>
+                                        </ul>
+                                    </li>
+                                </ul>
+                            </li>
+                        </ul>
+                    </div>
+                </div>
+                <div id="ia-swipe" class="swipe-affordance">
+                    <div class="swipe-icon">↔</div>
+                    <span>Swipe to explore IA</span>
+                    <span style="font-size: 0.8rem; margin-top: 5px; opacity: 0.7;">(Tap to dismiss)</span>
+                </div>
+            </div>
+
+            <h3 style="text-align: center; margin: 4rem 0 2rem 0;">Key User Flows</h3>
+            
+            <div class="tab-nav">
+                <button @click="activeTab = 'simulation'" :class="{ 'active': activeTab === 'simulation' }" class="tab-btn">1. Simulating Change</button>
+                <button @click="activeTab = 'onboarding'" :class="{ 'active': activeTab === 'onboarding' }" class="tab-button tab-btn">2. AI Onboarding</button>
+                <button @click="activeTab = 'risk'" :class="{ 'active': activeTab === 'risk' }" class="tab-button tab-btn">3. Resolving Risk</button>
+            </div>
+
+            <div class="flow-container">
+                <div x-show="activeTab === 'simulation'" class="flow-diagram">
+                    <div class="flow-step"><div class="step-icon"><i data-lucide="bar-chart-2"></i></div><p>Open Intelligence</p></div>
+                    <div class="flow-step"><div class="step-icon"><i data-lucide="sliders"></i></div><p>Select Scenario</p></div>
+                    <div class="flow-step"><div class="step-icon"><i data-lucide="edit-3"></i></div><p>Adjust Variables</p></div>
+                    <div class="flow-step"><div class="step-icon"><i data-lucide="cpu"></i></div><p>Run Simulation</p></div>
+                    <div class="flow-step"><div class="step-icon"><i data-lucide="check-circle"></i></div><p>Review Impact</p></div>
+                </div>
+                <div x-show="activeTab === 'onboarding'" class="flow-diagram">
+                    <div class="flow-step"><div class="step-icon"><i data-lucide="plus-square"></i></div><p>New Project</p></div>
+                    <div class="flow-step"><div class="step-icon"><i data-lucide="mic"></i></div><p>Natural Language Input</p></div>
+                    <div class="flow-step"><div class="step-icon"><i data-lucide="zap"></i></div><p>AI Generates Tasks</p></div>
+                    <div class="flow-step"><div class="step-icon"><i data-lucide="check"></i></div><p>User Approves</p></div>
+                </div>
+                <div x-show="activeTab === 'risk'" class="flow-diagram">
+                    <div class="flow-step"><div class="step-icon"><i data-lucide="alert-triangle"></i></div><p>Risk Detected</p></div>
+                    <div class="flow-step"><div class="step-icon"><i data-lucide="search"></i></div><p>View Details</p></div>
+                    <div class="flow-step"><div class="step-icon"><i data-lucide="lightbulb"></i></div><p>Review Suggestions</p></div>
+                    <div class="flow-step"><div class="step-icon"><i data-lucide="check-square"></i></div><p>Apply Fix</p></div>
+                </div>
+            </div>
+        </section>
+
+        <section class="section">
+            <h2 class="section-title">04. Early Sketches</h2>
+            <p class="section-desc">Testing layouts for data density before high-fidelity.</p>
+            <div class="grid-3">
+                <div class="lofi-card">
+                    <img src="https://raw.githubusercontent.com/PriyanshuRaiUXD/priyanshuraiuxd.github.io/main/dashbaord%20li.png" class="lofi-img" alt="Wireframe">
+                    <h4>Dashboard Exploration</h4>
+                    <p>Modular card-based layout to surface critical info.</p>
+                </div>
+                <div class="lofi-card">
+                    <img src="https://raw.githubusercontent.com/PriyanshuRaiUXD/priyanshuraiuxd.github.io/main/project%20li.png" class="lofi-img" alt="Wireframe">
+                    <h4>Health View</h4>
+                    <p>Presenting health scores clearly.</p>
+                </div>
+                <div class="lofi-card">
+                    <img src="https://raw.githubusercontent.com/PriyanshuRaiUXD/priyanshuraiuxd.github.io/main/resource%20li.png" class="lofi-img" alt="Wireframe">
+                    <h4>Resource Allocator</h4>
+                    <p>Visualizing team workload.</p>
+                </div>
+            </div>
+        </section>
+
+        <section class="section">
+            <h2 class="section-title">05. Visual System</h2>
+            <p class="section-desc">Designed for clarity and trust.</p>
+            
+            <div class="visual-card info-card">
+                <div class="style-grid">
+                    <div>
+                        <h3 style="margin-top:0;">Typography</h3>
+                        <p style="margin-bottom: 2rem; color: #ccc;"><strong>Inter</strong> for maximum legibility.</p>
+                        <div class="font-inter">
+                            <div class="type-row">
+                                <span class="type-label">Heading 1 / Bold</span>
+                                <p class="type-h1">Welcome back, Alex</p>
+                            </div>
+                            <div class="type-row">
+                                <span class="type-label">Heading 2 / Semibold</span>
+                                <p class="type-h2">AI Daily Briefing</p>
+                            </div>
+                            <div class="type-row" style="border:none;">
+                                <span class="type-label">Body / Regular</span>
+                                <p class="type-body">Your portfolio health is strong at 85/100.</p>
+                            </div>
+                        </div>
+                    </div>
+                    
+                    <div>
+                        <h3 style="margin-top:0;">Color Palette</h3>
+                        <p style="margin-bottom: 2rem; color: #ccc;">Calm slate base with vibrant purple accents.</p>
+                        <div class="colors-flex">
+                            <div style="text-align: center;"><div class="color-swatch" style="background: #8A3FFC;"></div><span class="type-label">Primary</span></div>
+                            <div style="text-align: center;"><div class="color-swatch" style="background: #1e293b;"></div><span class="type-label">Surface</span></div>
+                            <div style="text-align: center;"><div class="color-swatch" style="background: #16a34a;"></div><span class="type-label">Success</span></div>
+                            <div style="text-align: center;"><div class="color-swatch" style="background: #ef4444;"></div><span class="type-label">Alert</span></div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <section class="section">
+            <h2 class="section-title">06. The Product</h2>
+            <p class="section-desc">Experience the live build. Use the full screen option for the best experience.</p>
+            
+            <div class="proto-wrapper">
+                <div class="proto-bar">
+                    <button id="reload-btn" class="bar-btn"><i data-lucide="rotate-cw" style="width:12px;"></i> Reload</button>
+                    <button id="fullscreen-btn" class="bar-btn"><i data-lucide="maximize" style="width:12px;"></i> Full Screen</button>
+                </div>
+                <iframe id="prototype-iframe" class="proto-frame" src="https://www.priyanshuux.com/Nexus_PM/" title="Nexus PM Final Prototype"></iframe>
+            </div>
+        </section>
+
+        <footer id="contact">
+            <div class="footer-cta" data-aos="fade-up">
+                <h2 style="font-size: 2.5rem; color: white; margin-bottom: 2rem;">Ready to build?</h2>
+                <button class="btn-primary modal-trigger">Start a Conversation</button>
+            </div>
+
+            <div class="footer-grid">
+                <div class="footer-col">
+                    <div class="logo" style="margin-bottom: 1rem;">Core <span>& Pixel</span></div>
+                    <p style="color: #888; line-height: 1.6;">Digital architects building the future of web and software.</p>
+                </div>
+                <div class="footer-col">
+                    <h4>Sitemap</h4>
+                    <ul><li><a href="index.html#work">Work</a></li><li><a href="index.html#services">Services</a></li><li><a href="#">About</a></li></ul>
+                </div>
+                <div class="footer-col">
+                    <h4>Socials</h4>
+                    <ul><li><a href="#">LinkedIn</a></li><li><a href="#">Twitter / X</a></li><li><a href="#">GitHub</a></li></ul>
+                </div>
+                <div class="footer-col">
+                    <h4>Legal</h4>
+                    <ul><li><a class="legal-trigger">Privacy Policy</a></li><li><a class="legal-trigger">Terms of Service</a></li></ul>
+                </div>
+            </div>
+            <div class="footer-bottom">
+                <div>&copy; 2024 Core & Pixel. All rights reserved.</div>
+                <div>Designed & Engineered In-House.</div>
+            </div>
+        </footer>
+
+    </div>
+
+    <div id="contactModal" class="modal">
+        <div class="modal-content">
+            <span class="close-btn">&times;</span>
+            <h2 style="margin-bottom: 0.5rem; color: #fff;">Let's Talk</h2>
+            <p style="color: #999; margin-bottom: 2rem;">Tell us about your project.</p>
+            <form action="https://api.web3forms.com/submit" method="POST">
+                <input type="hidden" name="access_key" value="eaf9988e-32a5-49d9-9d9c-05e2188fa8d3">
+                <div class="form-group"><label class="form-label">Name</label><input type="text" name="name" class="form-input" required placeholder="John Doe"></div>
+                <div class="form-group"><label class="form-label">Email</label><input type="email" name="email" class="form-input" required placeholder="john@company.com"></div>
+                <div class="form-group"><label class="form-label">Message</label><textarea name="message" class="form-textarea" required placeholder="I need a website that..."></textarea></div>
+                <input type="checkbox" name="botcheck" class="hidden" style="display: none;">
+                <button type="submit" class="btn-primary" style="width: 100%; border: none;">Send Message</button>
+            </form>
+        </div>
+    </div>
+
+    <script src="https://unpkg.com/aos@2.3.1/dist/aos.js"></script>
+    <script>
+        AOS.init({ once: true, offset: 50, duration: 800 });
+        lucide.createIcons();
+
+        // Contact Modal Logic
+        const contactModal = document.getElementById("contactModal");
+        const triggerButtons = document.querySelectorAll(".modal-trigger");
+        const closeBtn = document.querySelector(".close-btn");
+        triggerButtons.forEach(btn => btn.addEventListener('click', () => { contactModal.style.display = "flex"; document.body.style.overflow = "hidden"; }));
+        closeBtn.addEventListener('click', () => { contactModal.style.display = "none"; document.body.style.overflow = "auto"; });
+
+        // Swipe Hints
+        function initSwipe(id, containerId) {
+            const el = document.getElementById(id);
+            const container = document.getElementById(containerId);
+            
+            if(el && container) {
+                // Check if content overflows
+                if (container.scrollWidth > container.clientWidth) {
+                    el.style.display = 'flex';
+                } else {
+                    el.style.display = 'none';
+                }
+
+                el.addEventListener('click', () => { el.style.opacity = '0'; setTimeout(() => el.style.display='none', 300); });
+            }
+        }
+        
+        // Init on load
+        window.addEventListener('load', () => {
+            initSwipe('ca-swipe', 'ca-scroll-container');
+            initSwipe('ia-swipe', 'ia-scroll-container');
+        });
+
+        // Fullscreen & Reload
+        const frame = document.getElementById('prototype-iframe');
+        const fsBtn = document.getElementById('fullscreen-btn');
+        const rlBtn = document.getElementById('reload-btn');
+
+        if(fsBtn && frame) {
+            fsBtn.addEventListener('click', () => {
+                if (frame.requestFullscreen) frame.requestFullscreen();
+                else if (frame.webkitRequestFullscreen) frame.webkitRequestFullscreen();
+            });
+        }
+        if(rlBtn && frame) {
+            rlBtn.addEventListener('click', () => frame.src = frame.src);
+        }
+
+        window.addEventListener('click', (event) => {
+            if (event.target === contactModal) { contactModal.style.display = "none"; document.body.style.overflow = "auto"; }
+        });
+    </script>
+</body>
+</html>
