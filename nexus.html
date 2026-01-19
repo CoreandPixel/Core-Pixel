@@ -48,6 +48,7 @@
         /* --- GLOBAL UTILS --- */
         .container { max-width: 1200px; margin: 0 auto; padding: 0 5%; }
         .section { margin-bottom: 8rem; }
+        
         .grid-sidebar { display: grid; grid-template-columns: 3fr 1.5fr; gap: 4rem; align-items: start; }
         .grid-3 { display: grid; grid-template-columns: repeat(3, 1fr); gap: 2rem; }
 
@@ -63,6 +64,8 @@
             padding: 2rem 5%; position: absolute; width: 100%; top: 0; z-index: 100;
         }
         .logo { font-weight: 800; font-size: 1.25rem; letter-spacing: -0.5px; color: white; text-decoration: none;}
+        .logo span { color: #888; font-weight: 400; }
+        
         .btn-glass {
             padding: 10px 24px; border-radius: 100px; background: rgba(255, 255, 255, 0.05);
             border: 1px solid var(--border-color); color: #fff; font-size: 0.8rem; font-weight: 600;
@@ -116,7 +119,7 @@
 
         /* --- CHALLENGES --- */
         .challenge-card { 
-            background: var(--bg-card); /* Dark BG */
+            background: var(--bg-card); 
             border: 1px solid var(--border-color); 
             border-radius: 20px; 
             padding: 2rem; 
@@ -198,12 +201,25 @@
         .color-swatch { width: 60px; height: 60px; border-radius: 12px; margin-bottom: 0.5rem; border: 1px solid rgba(255,255,255,0.1); }
         .colors-flex { display: flex; gap: 1.5rem; flex-wrap: wrap; }
 
-        /* --- PROTOTYPE --- */
-        .proto-wrapper { background: #1e293b; border-radius: 12px; overflow: hidden; border: 1px solid var(--border-color); }
-        .proto-bar { padding: 10px; background: rgba(255,255,255,0.05); display: flex; justify-content: flex-end; gap: 10px; border-bottom: 1px solid var(--border-color); }
+        /* --- FULL WIDTH PROTOTYPE --- */
+        .full-width-section { 
+            width: 100%; 
+            background: #050505; /* Distinct dark background */
+            border-top: 1px solid var(--border-color);
+            border-bottom: 1px solid var(--border-color);
+            padding: 6rem 0;
+            margin-bottom: 6rem;
+        }
+        
+        .proto-wrapper { background: transparent; overflow: hidden; }
+        .proto-bar { padding: 10px; background: rgba(255,255,255,0.05); display: flex; justify-content: flex-end; gap: 10px; border: 1px solid var(--border-color); border-bottom: none; border-radius: 12px 12px 0 0; }
         .bar-btn { font-size: 0.75rem; color: #ccc; background: transparent; border: none; cursor: pointer; display: flex; align-items: center; gap: 5px; padding: 5px 10px; border-radius: 4px; }
         .bar-btn:hover { background: rgba(255,255,255,0.1); color: #fff; }
-        .proto-frame { width: 100%; height: 700px; border: none; background: #111; }
+        .proto-frame { width: 100%; height: 75vh; border: 1px solid var(--border-color); background: #111; border-radius: 0 0 12px 12px; }
+
+        /* --- METRICS --- */
+        .metric-card { background: linear-gradient(180deg, rgba(255,255,255,0.05) 0%, rgba(255,255,255,0.01) 100%); border: 1px solid var(--border-color); border-radius: 16px; padding: 2.5rem; text-align: center; }
+        .metric-val { font-size: 3.5rem; font-weight: 800; color: var(--accent-cyan); display: block; margin-bottom: 0.5rem; line-height: 1; }
 
         /* --- FOOTER --- */
         footer { background: #000; padding-top: 5rem; border-top: 1px solid var(--border-color); font-size: 0.9rem; }
@@ -216,10 +232,9 @@
         .footer-col ul li a:hover { color: #fff; }
         .footer-bottom { max-width: 1200px; margin: 0 auto; padding: 2rem 5%; border-top: 1px solid rgba(255,255,255,0.05); display: flex; justify-content: space-between; color: #444; font-size: 0.8rem; }
 
-        /* Swipe Overlay - DEFAULT HIDDEN */
+        /* Swipe Overlay */
         .swipe-affordance { 
-            display: none; /* JS will toggle to flex if needed */
-            position: absolute; inset: 0; background: rgba(0,0,0,0.6); backdrop-filter: blur(4px); flex-direction: column; align-items: center; justify-content: center; color: #fff; font-weight: 600; cursor: pointer; z-index: 10; transition: opacity 0.3s; 
+            display: none; position: absolute; inset: 0; background: rgba(0,0,0,0.6); backdrop-filter: blur(4px); flex-direction: column; align-items: center; justify-content: center; color: #fff; font-weight: 600; cursor: pointer; z-index: 10; transition: opacity 0.3s; 
         }
         .swipe-icon { font-size: 2rem; margin-bottom: 0.5rem; animation: pulse 2s infinite; }
         @keyframes pulse { 0% { opacity: 0.5; transform: scale(0.9); } 50% { opacity: 1; transform: scale(1.1); } 100% { opacity: 0.5; transform: scale(0.9); } }
@@ -243,9 +258,8 @@
             .grid-sidebar, .grid-3, .grid-2, .style-grid, .persona-grid, .footer-grid { grid-template-columns: 1fr; }
             .hero h1 { font-size: 3rem; }
             .sticky-card { position: static; }
-            .footer-bottom { flex-direction: column; gap: 1rem; text-align: center; }
-            .flow-step:not(:last-child)::after { display: none; }
             .flow-diagram { gap: 3rem; }
+            .footer-bottom { flex-direction: column; gap: 1rem; text-align: center; }
         }
     </style>
 </head>
@@ -255,8 +269,7 @@
 
     <nav>
         <a href="index.html" class="logo">Core <span>& Pixel</span></a>
-        <button class="btn-glass modal-trigger" style="font-size: 0.8rem;">Get in Touch</button>
-    </nav>
+        </nav>
 
     <header class="project-hero" data-aos="fade-up">
         <a href="index.html#work" style="color: var(--accent-purple); display: inline-flex; align-items: center; gap: 5px; margin-bottom: 1rem; font-size: 0.9rem; text-decoration: none;">
@@ -305,9 +318,8 @@
             <p class="section-desc">We analyzed existing tools to identify gaps. Most tools log history; we wanted to predict the future.</p>
 
             <h3 style="text-align:center; margin-bottom: 2rem;">Competitive Analysis</h3>
-            
-            <div class="info-card" style="padding: 0; overflow: hidden; margin-bottom: 2rem;">
-                <div class="table-scroll" id="ca-scroll-container" style="margin:0;">
+            <div class="info-card" style="padding:0; overflow:hidden; margin-bottom:2rem;">
+                <div class="table-scroll" id="ca-scroll-container" style="margin-bottom:0;">
                     <table class="comparison-table">
                         <thead>
                             <tr>
@@ -444,7 +456,9 @@
                                                     <li><div class="ia-node">Task Board</div></li>
                                                     <li><div class="ia-node">Budget Analysis</div></li>
                                                     <li><div class="ia-node">Team Health</div></li>
-                                                    <li><div class="ia-node">Blockers</div></li>
+                                                    <li><div class="ia-node">Communication Hub</div></li>
+                                                    <li><div class="ia-node">Blockers & Resolutions</div></li>
+                                                    <li><div class="ia-node">Activity Log</div></li>
                                                 </ul>
                                             </li>
                                         </ul>
@@ -454,17 +468,17 @@
                                         <ul>
                                             <li><div class="ia-node">Strategic Metrics</div></li>
                                             <li><div class="ia-node">AI Strategy Summary</div></li>
-                                            <li><div class="ia-node">Objectives</div></li>
+                                            <li><div class="ia-node">Objectives & Key Results</div></li>
                                         </ul>
                                     </li>
                                     <li>
                                         <div class="ia-node">Intelligence</div>
                                         <ul>
                                             <li><div class="ia-node">Health & Forecast</div></li>
-                                            <li><div class="ia-node">Portfolio Risk</div></li>
+                                            <li><div class="ia-node">Portfolio Risk Matrix</div></li>
                                             <li><div class="ia-node">Budget Tracker</div></li>
                                             <li><div class="ia-node">Anomaly Detection</div></li>
-                                            <li><div class="ia-node">Simulator</div></li>
+                                            <li><div class="ia-node">Resource Simulator</div></li>
                                         </ul>
                                     </li>
                                     <li>
@@ -472,6 +486,7 @@
                                         <ul>
                                             <li><div class="ia-node">AI Weekly Digest</div></li>
                                             <li><div class="ia-node">Activity Timeline</div></li>
+                                            <li><div class="ia-node">Filters</div></li>
                                         </ul>
                                     </li>
                                      <li>
@@ -479,7 +494,10 @@
                                         <ul>
                                             <li><div class="ia-node">My Profile</div></li>
                                             <li><div class="ia-node">AI Controls</div></li>
-                                            <li><div class="ia-node">Integrations</div></li>
+                                            <li><div class="ia-node">Notifications</div></li>
+                                            <li><div class="ia-node">Connected Apps</div></li>
+                                            <li><div class="ia-node">Workspace</div></li>
+                                            <li><div class="ia-node">Security</div></li>
                                         </ul>
                                     </li>
                                 </ul>
@@ -586,10 +604,10 @@
             </div>
         </section>
 
-        <section class="section">
-            <h2 class="section-title">06. The Product</h2>
-            <p class="section-desc">Experience the live build. Use the full screen option for the best experience.</p>
-            
+    </div><section class="full-width-section">
+        <h2 class="section-title">06. The Product</h2>
+        <p class="section-desc">Experience the live build.</p>
+        <div class="container">
             <div class="proto-wrapper">
                 <div class="proto-bar">
                     <button id="reload-btn" class="bar-btn"><i data-lucide="rotate-cw" style="width:12px;"></i> Reload</button>
@@ -597,39 +615,66 @@
                 </div>
                 <iframe id="prototype-iframe" class="proto-frame" src="https://www.priyanshuux.com/Nexus_PM/" title="Nexus PM Final Prototype"></iframe>
             </div>
+        </div>
+    </section>
+
+    <div class="container">
+        <section class="section" style="margin-bottom: 4rem;">
+            <h2 class="section-title">Key Business Metrics</h2>
+            <p class="section-desc">Measuring the impact of predictive management vs reactive tracking.</p>
+            <div class="grid-3">
+                <div class="metric-card">
+                    <span class="metric-val">4 Hrs</span>
+                    <span class="metric-label">Saved Per Week</span>
+                    <p style="margin-top: 10px; font-size: 0.9rem; color: #888;">Reduction in manual status reporting and data entry.</p>
+                </div>
+                <div class="metric-card">
+                    <span class="metric-val">85%</span>
+                    <span class="metric-label">Prediction Accuracy</span>
+                    <p style="margin-top: 10px; font-size: 0.9rem; color: #888;">Success rate of AI risk detection algorithm during beta.</p>
+                </div>
+                <div class="metric-card">
+                    <span class="metric-val">3x</span>
+                    <span class="metric-label">Faster Decisions</span>
+                    <p style="margin-top: 10px; font-size: 0.9rem; color: #888;">Speed increase in re-allocating resources during crunch time.</p>
+                </div>
+            </div>
         </section>
-
-        <footer id="contact">
-            <div class="footer-cta" data-aos="fade-up">
-                <h2 style="font-size: 2.5rem; color: white; margin-bottom: 2rem;">Ready to build?</h2>
-                <button class="btn-primary modal-trigger">Start a Conversation</button>
-            </div>
-
-            <div class="footer-grid">
-                <div class="footer-col">
-                    <div class="logo" style="margin-bottom: 1rem;">Core <span>& Pixel</span></div>
-                    <p style="color: #888; line-height: 1.6;">Digital architects building the future of web and software.</p>
-                </div>
-                <div class="footer-col">
-                    <h4>Sitemap</h4>
-                    <ul><li><a href="index.html#work">Work</a></li><li><a href="index.html#services">Services</a></li><li><a href="#">About</a></li></ul>
-                </div>
-                <div class="footer-col">
-                    <h4>Socials</h4>
-                    <ul><li><a href="#">LinkedIn</a></li><li><a href="#">Twitter / X</a></li><li><a href="#">GitHub</a></li></ul>
-                </div>
-                <div class="footer-col">
-                    <h4>Legal</h4>
-                    <ul><li><a class="legal-trigger">Privacy Policy</a></li><li><a class="legal-trigger">Terms of Service</a></li></ul>
-                </div>
-            </div>
-            <div class="footer-bottom">
-                <div>&copy; 2024 Core & Pixel. All rights reserved.</div>
-                <div>Designed & Engineered In-House.</div>
-            </div>
-        </footer>
-
     </div>
+
+    <footer id="contact">
+        <div class="footer-cta" data-aos="fade-up">
+            <h2 style="font-size: 2.5rem; color: white; margin-bottom: 2rem;">Ready to build?</h2>
+            <button class="btn-primary modal-trigger">Start a Conversation</button>
+        </div>
+
+        <div class="footer-grid">
+            <div class="footer-col">
+                <div class="logo" style="margin-bottom: 1rem;">Core <span>& Pixel</span></div>
+                <p style="color: #888; line-height: 1.6;">Digital architects building the future of web and software. Based in NYC, working globally.</p>
+            </div>
+            <div class="footer-col">
+                <h4>Sitemap</h4>
+                <ul><li><a href="index.html#work">Work</a></li><li><a href="index.html#services">Services</a></li><li><a href="#">Process</a></li><li><a href="#">About</a></li></ul>
+            </div>
+            <div class="footer-col">
+                <h4>Socials</h4>
+                <ul><li><a href="#">LinkedIn</a></li><li><a href="#">Twitter / X</a></li><li><a href="#">GitHub</a></li><li><a href="#">Dribbble</a></li></ul>
+            </div>
+            <div class="footer-col">
+                <h4>Legal</h4>
+                <ul>
+                    <li><a class="legal-trigger">Privacy Policy</a></li>
+                    <li><a class="legal-trigger">Terms of Service</a></li>
+                    <li><a class="legal-trigger">Cookie Policy</a></li>
+                </ul>
+            </div>
+        </div>
+        <div class="footer-bottom">
+            <div>&copy; 2024 Core & Pixel. All rights reserved.</div>
+            <div>Designed & Engineered In-House.</div>
+        </div>
+    </footer>
 
     <div id="contactModal" class="modal">
         <div class="modal-content">
@@ -659,30 +704,33 @@
         triggerButtons.forEach(btn => btn.addEventListener('click', () => { contactModal.style.display = "flex"; document.body.style.overflow = "hidden"; }));
         closeBtn.addEventListener('click', () => { contactModal.style.display = "none"; document.body.style.overflow = "auto"; });
 
-        // Swipe Hints
+        // Swipe Hints (JS Logic to only show if scrollable)
         function initSwipe(id, containerId) {
             const el = document.getElementById(id);
             const container = document.getElementById(containerId);
             
             if(el && container) {
-                // Check if content overflows
-                if (container.scrollWidth > container.clientWidth) {
-                    el.style.display = 'flex';
-                } else {
-                    el.style.display = 'none';
-                }
+                const checkScroll = () => {
+                    if (container.scrollWidth > container.clientWidth) {
+                        el.style.display = 'flex';
+                    } else {
+                        el.style.display = 'none';
+                    }
+                };
+                // Check on load and resize
+                checkScroll();
+                window.addEventListener('resize', checkScroll);
 
                 el.addEventListener('click', () => { el.style.opacity = '0'; setTimeout(() => el.style.display='none', 300); });
             }
         }
         
-        // Init on load
         window.addEventListener('load', () => {
             initSwipe('ca-swipe', 'ca-scroll-container');
             initSwipe('ia-swipe', 'ia-scroll-container');
         });
 
-        // Fullscreen & Reload
+        // Fullscreen & Reload Logic
         const frame = document.getElementById('prototype-iframe');
         const fsBtn = document.getElementById('fullscreen-btn');
         const rlBtn = document.getElementById('reload-btn');
