@@ -337,7 +337,7 @@
         .footer-col h4 { color: #fff; margin-bottom: 1.5rem; font-size: 1rem; }
         .footer-col ul { list-style: none; }
         .footer-col ul li { margin-bottom: 0.8rem; }
-        .footer-col ul li a { color: #888; transition: 0.3s; }
+        .footer-col ul li a { color: #888; transition: 0.3s; cursor: pointer; }
         .footer-col ul li a:hover { color: #fff; }
         .footer-bottom {
             max-width: 1400px; margin: 0 auto; padding: 2rem 5%;
@@ -354,11 +354,12 @@
         }
         .modal.active { display: flex; justify-content: center; align-items: center; opacity: 1; }
         .modal-content {
-            background: linear-gradient(135deg, rgba(20,20,25,0.9), rgba(10,10,12,0.95));
+            background: linear-gradient(135deg, rgba(20,20,25,0.95), rgba(10,10,12,0.98));
             margin: auto; padding: 3rem; border: 1px solid var(--border-color);
-            width: 90%; max-width: 500px; border-radius: 24px;
+            width: 90%; max-width: 600px; border-radius: 24px;
             box-shadow: 0 20px 50px rgba(0,0,0,0.5); position: relative;
             transform: scale(0.8); transition: transform 0.3s ease;
+            color: #ccc;
         }
         .modal.active .modal-content { transform: scale(1); }
         .close-btn {
@@ -377,6 +378,18 @@
             outline: none; border-color: var(--accent-cyan); background: rgba(255,255,255,0.1);
         }
         .form-textarea { min-height: 120px; resize: vertical; }
+        
+        /* Modal Typography */
+        .modal h2 { color: white; margin-bottom: 1rem; }
+        .modal h3 { color: white; margin-top: 1.5rem; margin-bottom: 0.5rem; font-size: 1.1rem; }
+        .modal p { font-size: 0.9rem; line-height: 1.6; margin-bottom: 1rem; }
+        .legal-text { max-height: 400px; overflow-y: auto; padding-right: 10px; }
+        
+        /* Custom Scrollbar for legal text */
+        .legal-text::-webkit-scrollbar { width: 5px; }
+        .legal-text::-webkit-scrollbar-track { background: rgba(255,255,255,0.05); }
+        .legal-text::-webkit-scrollbar-thumb { background: rgba(255,255,255,0.2); border-radius: 5px; }
+
 
         @media (max-width: 900px) {
             .bento-grid { grid-template-columns: 1fr; }
@@ -427,14 +440,12 @@
             
             <div class="card" data-aos="fade-up">
                 <div class="card-tag">GROWTH</div>
-                
                 <div class="icon-box">
                     <svg viewBox="0 0 24 24" fill="none" stroke="var(--accent-purple)" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round">
                         <polyline points="22 7 13.5 15.5 8.5 10.5 2 17" class="anim-path"></polyline>
                         <polyline points="16 7 22 7 22 13" class="anim-arrow"></polyline>
                     </svg>
                 </div>
-
                 <div class="card-content-bottom">
                     <h3>Revenue-First Design</h3>
                     <p>We build psychological user journeys optimized for high conversion.</p>
@@ -442,8 +453,7 @@
             </div>
 
             <div class="card" data-aos="fade-up" data-aos-delay="100">
-                <div class="card-tag">SCALE</div>
-                
+                <div class="card-tag">SYSTEMS</div>
                 <div class="icon-box">
                     <svg viewBox="0 0 24 24" fill="none" stroke="var(--accent-cyan)" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round">
                         <rect x="2" y="2" width="20" height="8" rx="2" ry="2"></rect>
@@ -452,32 +462,28 @@
                         <line x1="6" y1="18" x2="6.01" y2="18" stroke-width="3" class="server-light-2"></line>
                     </svg>
                 </div>
-
                 <div class="card-content-bottom">
-                    <h3>Elastic Infrastructure</h3>
-                    <p>Serverless architectures built on AWS that auto-scale to millions.</p>
+                    <h3>Systems & Workflows</h3>
+                    <p>Scalable workflow management systems (WMS) and elastic architectures that auto-scale.</p>
                 </div>
             </div>
 
             <div class="card" data-aos="fade-up" data-aos-delay="200">
-                <div class="card-tag">TRUST</div>
-                
+                <div class="card-tag">QA & TRUST</div>
                 <div class="icon-box">
                     <svg viewBox="0 0 24 24" fill="none" stroke="#fff" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round">
                         <path d="M12 22s8-4 8-10V5l-8-3-8 3v7c0 6 8 10 8 10z"></path>
                         <circle cx="12" cy="12" r="3" stroke="var(--accent-cyan)" class="lock-spin"></circle>
                     </svg>
                 </div>
-
                 <div class="card-content-bottom">
-                    <h3>Fortress Security</h3>
-                    <p>Enterprise encryption, SOC2 compliance, and automated testing.</p>
+                    <h3>QA & Automation</h3>
+                    <p>Rigorous UAT & QAT protocols, automated testing pipelines, and SOC2 compliance.</p>
                 </div>
             </div>
 
              <div class="card" data-aos="fade-up" data-aos-delay="300">
                 <div class="card-tag">STACK</div>
-                
                 <div class="icon-box">
                     <svg viewBox="0 0 24 24" fill="none" stroke="var(--accent-purple)" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round">
                         <polygon points="12 2 2 7 12 12 22 7 12 2" class="layer-1"></polygon>
@@ -485,7 +491,6 @@
                         <polygon points="2 12 12 17 22 12 12 7 2 12" class="layer-2"></polygon>
                     </svg>
                 </div>
-
                 <div class="card-content-bottom">
                     <h3>The Modern Stack</h3>
                     <div class="tech-list">
@@ -505,33 +510,37 @@
         </div>
 
         <div class="project-grid">
+            
             <div class="project-card featured-project" data-aos="fade-up">
-                <img src="https://images.unsplash.com/photo-1642427749670-f20e2e76ed8c?q=80&w=2960&auto=format&fit=crop" class="project-img" alt="Featured Project">
+                <img src="https://images.unsplash.com/photo-1576091160399-112ba8d25d1d?q=80&w=2960&auto=format&fit=crop" class="project-img" alt="WellNexus App">
                 <div class="project-info">
                     <span style="color: var(--accent-cyan); font-family: var(--font-code); font-size: 0.9rem;">FEATURED CASE STUDY</span>
-                    <h3>Nexus Fintech Dashboard</h3>
-                    <p>Banking system overhaul with WebGL data visualization.</p>
+                    <h3>WellNexus</h3>
+                    <p>Integrated healthcare app with telemedicine & patient record synchronization.</p>
                 </div>
             </div>
+
             <div class="project-card small-project" data-aos="fade-up" data-aos-delay="100">
-                <img src="https://images.unsplash.com/photo-1558655146-d09347e92766?q=80&w=2000&auto=format&fit=crop" class="project-img" alt="Project 1">
+                <img src="https://images.unsplash.com/photo-1618220179428-22790b461013?q=80&w=2000&auto=format&fit=crop" class="project-img" alt="Shoppio App">
                 <div class="project-info">
-                    <h3>Lumina E-Comm</h3>
-                    <p style="color: #999;">Headless Shopify + 3D</p>
+                    <h3>Shoppio</h3>
+                    <p style="color: #999;">AR Furniture Shopping App</p>
                 </div>
             </div>
+
             <div class="project-card small-project" data-aos="fade-up" data-aos-delay="200">
-                <img src="https://images.unsplash.com/photo-1551288049-bebda4e38f71?q=80&w=2000&auto=format&fit=crop" class="project-img" alt="Project 2">
+                <img src="https://images.unsplash.com/photo-1551288049-bebda4e38f71?q=80&w=2000&auto=format&fit=crop" class="project-img" alt="Nexus PM">
                 <div class="project-info">
-                    <h3>Vitality Health</h3>
-                    <p style="color: #999;">React Native App</p>
+                    <h3>Nexus PM</h3>
+                    <p style="color: #999;">Proactive Management Dashboard</p>
                 </div>
             </div>
+
             <div class="project-card wide-project" data-aos="fade-up" data-aos-delay="300">
-                <img src="https://images.unsplash.com/photo-1607799275518-d58665d096b1?q=80&w=2000&auto=format&fit=crop" class="project-img" alt="Project 3">
+                <img src="https://images.unsplash.com/photo-1607799275518-d58665d096b1?q=80&w=2000&auto=format&fit=crop" class="project-img" alt="Aero Logistics">
                 <div class="project-info">
                     <h3>Aero Logistics</h3>
-                    <p style="color: #999;">Route Optimization API</p>
+                    <p style="color: #999;">Route Optimization API & Fleet Management</p>
                 </div>
             </div>
         </div>
@@ -547,7 +556,7 @@
         <div class="footer-grid">
             <div class="footer-col">
                 <div class="logo" style="margin-bottom: 1rem;">Core <span>& Pixel</span></div>
-                <p style="color: #888; line-height: 1.6;">Digital architects building the future of web and software. Based in Germany, working globally.</p>
+                <p style="color: #888; line-height: 1.6;">Digital architects building the future of web and software. Based in NYC, working globally.</p>
             </div>
             
             <div class="footer-col">
@@ -573,9 +582,9 @@
             <div class="footer-col">
                 <h4>Legal</h4>
                 <ul>
-                    <li><a href="#">Privacy Policy</a></li>
-                    <li><a href="#">Terms of Service</a></li>
-                    <li><a href="#">Cookie Policy</a></li>
+                    <li><a class="legal-trigger" data-type="privacy">Privacy Policy</a></li>
+                    <li><a class="legal-trigger" data-type="terms">Terms of Service</a></li>
+                    <li><a class="legal-trigger" data-type="cookie">Cookie Policy</a></li>
                 </ul>
             </div>
         </div>
@@ -612,6 +621,41 @@
         </div>
     </div>
 
+    <div id="legalModal" class="modal">
+        <div class="modal-content">
+            <span class="close-btn" id="closeLegal">&times;</span>
+            <h2 id="legalTitle">Policy Title</h2>
+            <div id="legalBody" class="legal-text">
+                </div>
+        </div>
+    </div>
+
+    <div style="display:none;">
+        <div id="content-privacy">
+            <p><strong>Effective Date: Jan 2024</strong></p>
+            <p>At Core & Pixel, we respect your privacy. This Privacy Policy explains how we collect, use, and protect your information.</p>
+            <h3>1. Information Collection</h3>
+            <p>We collect information you provide directly to us via forms (name, email) and automatically through cookies (IP address, browser type).</p>
+            <h3>2. Use of Information</h3>
+            <p>We use your data to respond to inquiries, improve our website, and ensure security. We do not sell your data to third parties.</p>
+        </div>
+        <div id="content-terms">
+            <p><strong>Last Updated: Jan 2024</strong></p>
+            <h3>1. Acceptance of Terms</h3>
+            <p>By accessing our website, you agree to these Terms of Service. If you do not agree, please do not use our services.</p>
+            <h3>2. Intellectual Property</h3>
+            <p>All content, designs, and code on this site are the property of Core & Pixel unless otherwise stated.</p>
+        </div>
+        <div id="content-cookie">
+            <p><strong>Cookie Policy</strong></p>
+            <p>We use cookies to enhance your browsing experience and analyze site traffic.</p>
+            <h3>1. Types of Cookies</h3>
+            <p><strong>Essential:</strong> Required for the site to function.<br><strong>Analytics:</strong> Help us understand how visitors interact with the site.</p>
+            <h3>2. Managing Cookies</h3>
+            <p>You can control cookie preferences through your browser settings.</p>
+        </div>
+    </div>
+
     <script src="https://unpkg.com/aos@2.3.1/dist/aos.js"></script>
     <script>
         AOS.init({
@@ -621,26 +665,66 @@
             easing: 'cubic-bezier(0.2, 0.8, 0.2, 1)',
         });
 
-        const modal = document.getElementById("contactModal");
-        const triggerButtons = document.querySelectorAll(".modal-trigger");
-        const closeBtn = document.querySelector(".close-btn");
+        // --- CONTACT MODAL LOGIC ---
+        const contactModal = document.getElementById("contactModal");
+        const contactTriggers = document.querySelectorAll(".modal-trigger");
+        const contactClose = contactModal.querySelector(".close-btn");
 
-        triggerButtons.forEach(btn => {
+        contactTriggers.forEach(btn => {
             btn.addEventListener('click', () => {
-                modal.classList.add("active");
+                contactModal.classList.add("active");
                 document.body.style.overflow = "hidden";
             });
         });
 
-        function closeModal() {
-            modal.classList.remove("active");
+        contactClose.addEventListener('click', () => {
+            contactModal.classList.remove("active");
             document.body.style.overflow = "auto";
-        }
+        });
 
-        closeBtn.addEventListener('click', closeModal);
+        // --- LEGAL MODAL LOGIC ---
+        const legalModal = document.getElementById("legalModal");
+        const legalTitle = document.getElementById("legalTitle");
+        const legalBody = document.getElementById("legalBody");
+        const legalTriggers = document.querySelectorAll(".legal-trigger");
+        const legalClose = document.getElementById("closeLegal");
+
+        legalTriggers.forEach(btn => {
+            btn.addEventListener('click', (e) => {
+                e.preventDefault();
+                const type = btn.getAttribute('data-type');
+                
+                // Set Content based on type
+                if(type === 'privacy') {
+                    legalTitle.innerText = "Privacy Policy";
+                    legalBody.innerHTML = document.getElementById('content-privacy').innerHTML;
+                } else if(type === 'terms') {
+                    legalTitle.innerText = "Terms of Service";
+                    legalBody.innerHTML = document.getElementById('content-terms').innerHTML;
+                } else if(type === 'cookie') {
+                    legalTitle.innerText = "Cookie Policy";
+                    legalBody.innerHTML = document.getElementById('content-cookie').innerHTML;
+                }
+
+                legalModal.classList.add("active");
+                document.body.style.overflow = "hidden";
+            });
+        });
+
+        legalClose.addEventListener('click', () => {
+            legalModal.classList.remove("active");
+            document.body.style.overflow = "auto";
+        });
+
+        // Global Close on Outside Click
         window.addEventListener('click', (event) => {
-            if (event.target === modal) {
-                closeModal();
+            if (event.target === contactModal) {
+                contactModal.classList.remove("active");
+                document.body.style.overflow = "auto";
+            }
+            if (event.target === legalModal) {
+                legalModal.classList.remove("active");
+                document.body.style.overflow = "auto";
             }
         });
     </script>
