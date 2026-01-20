@@ -248,6 +248,15 @@
         .form-label { display: block; margin-bottom: 0.5rem; font-size: 0.9rem; color: #ccc; }
         .form-input, .form-textarea { width: 100%; padding: 12px 15px; border-radius: 8px; background: rgba(255,255,255,0.05); border: 1px solid rgba(255,255,255,0.1); color: #fff; transition: 0.3s; }
         .form-textarea { min-height: 120px; resize: vertical; }
+        
+        /* Legal Text */
+        .legal-text { max-height: 400px; overflow-y: auto; padding-right: 10px; }
+        .legal-text h3 { color: #fff; margin-top: 1.5rem; font-size: 1.2rem; }
+        .legal-text p { font-size: 0.9rem; color: #aaa; margin-bottom: 1rem; }
+        .legal-text::-webkit-scrollbar { width: 5px; }
+        .legal-text::-webkit-scrollbar-track { background: rgba(255,255,255,0.05); }
+        .legal-text::-webkit-scrollbar-thumb { background: rgba(255,255,255,0.2); border-radius: 5px; }
+
         .btn-primary { 
             padding: 12px 28px; border-radius: 100px; background: #ffffff; color: #000000; 
             font-size: 0.9rem; font-weight: 700; transition: 0.3s; text-decoration: none; 
@@ -269,7 +278,7 @@
 
     <nav>
         <a href="index.html" class="logo">Core <span>& Pixel</span></a>
-        </nav>
+    </nav>
 
     <header class="project-hero" data-aos="fade-up">
         <a href="index.html#work" style="color: var(--accent-purple); display: inline-flex; align-items: center; gap: 5px; margin-bottom: 1rem; font-size: 0.9rem; text-decoration: none;">
@@ -659,14 +668,17 @@
             </div>
             <div class="footer-col">
                 <h4>Socials</h4>
-                <ul><li><a href="#">LinkedIn</a></li><li><a href="#">Twitter / X</a></li><li><a href="#">GitHub</a></li><li><a href="#">Dribbble</a></li></ul>
+                <ul>
+                    <li><a href="https://github.com/CoreandPixel" target="_blank">GitHub</a></li>
+                    <li><a href="https://www.behance.net/priyanshu_rai" target="_blank">Behance</a></li>
+                </ul>
             </div>
             <div class="footer-col">
                 <h4>Legal</h4>
                 <ul>
-                    <li><a class="legal-trigger">Privacy Policy</a></li>
-                    <li><a class="legal-trigger">Terms of Service</a></li>
-                    <li><a class="legal-trigger">Cookie Policy</a></li>
+                    <li><a class="legal-trigger" data-type="privacy">Privacy Policy</a></li>
+                    <li><a class="legal-trigger" data-type="terms">Terms of Service</a></li>
+                    <li><a class="legal-trigger" data-type="cookie">Cookie Policy</a></li>
                 </ul>
             </div>
         </div>
@@ -692,6 +704,39 @@
         </div>
     </div>
 
+    <div id="legalModal" class="modal">
+        <div class="modal-content">
+            <span class="close-btn" id="closeLegal">&times;</span>
+            <h2 id="legalTitle" style="color:#fff; margin-bottom:1rem;">Policy Title</h2>
+            <div id="legalBody" class="legal-text" style="color:#ccc; line-height:1.6;"></div>
+        </div>
+    </div>
+    
+    <div style="display:none;">
+        <div id="content-privacy">
+            <p><strong>Effective Date: Jan 2024</strong></p>
+            <p>At Core & Pixel, we respect your privacy. This Privacy Policy explains how we collect, use, and protect your information.</p>
+            <h3>1. Information Collection</h3><p>We collect personal information (name, email) only when you voluntarily provide it via our contact forms.</p>
+            <h3>2. Use of Information</h3><p>We use your data solely to respond to inquiries, discuss potential projects, and improve our services.</p>
+            <h3>3. Data Protection</h3><p>We implement industry-standard security measures to protect your data from unauthorized access.</p>
+            <h3>4. Third-Party Sharing</h3><p>We do not sell your data. We may use third-party tools (like Web3Forms) strictly for processing inquiries.</p>
+        </div>
+        <div id="content-terms">
+            <p><strong>Last Updated: Jan 2024</strong></p>
+            <h3>1. Acceptance</h3><p>By accessing Core & Pixel, you agree to these Terms of Service.</p>
+            <h3>2. Intellectual Property</h3><p>All designs, code, and content on this site are the intellectual property of Core & Pixel unless otherwise stated. Unauthorized reproduction is prohibited.</p>
+            <h3>3. Usage License</h3><p>You are granted a limited license to view this site for personal, non-commercial use.</p>
+            <h3>4. Disclaimer</h3><p>The materials on this website are provided "as is". Core & Pixel makes no warranties, expressed or implied.</p>
+        </div>
+        <div id="content-cookie">
+            <p><strong>Cookie Policy</strong></p>
+            <p>We use cookies to improve your experience.</p>
+            <h3>1. Essential Cookies</h3><p>Necessary for the website to function correctly (e.g., loading assets).</p>
+            <h3>2. Analytics Cookies</h3><p>We may use anonymous analytics to understand site traffic and user behavior.</p>
+            <h3>3. Managing Cookies</h3><p>You can choose to disable cookies through your browser settings, though this may affect site functionality.</p>
+        </div>
+    </div>
+
     <script src="https://unpkg.com/aos@2.3.1/dist/aos.js"></script>
     <script>
         AOS.init({ once: true, offset: 50, duration: 800 });
@@ -703,6 +748,33 @@
         const closeBtn = document.querySelector(".close-btn");
         triggerButtons.forEach(btn => btn.addEventListener('click', () => { contactModal.style.display = "flex"; document.body.style.overflow = "hidden"; }));
         closeBtn.addEventListener('click', () => { contactModal.style.display = "none"; document.body.style.overflow = "auto"; });
+
+        // Legal Modal Logic
+        const legalModal = document.getElementById("legalModal");
+        const legalTitle = document.getElementById("legalTitle");
+        const legalBody = document.getElementById("legalBody");
+        const legalTriggers = document.querySelectorAll(".legal-trigger");
+        const legalClose = document.getElementById("closeLegal");
+
+        legalTriggers.forEach(btn => {
+            btn.addEventListener('click', (e) => {
+                e.preventDefault();
+                const type = btn.getAttribute('data-type');
+                if(type === 'privacy') { 
+                    legalTitle.innerText = "Privacy Policy"; 
+                    legalBody.innerHTML = document.getElementById('content-privacy').innerHTML; 
+                } else if(type === 'terms') { 
+                    legalTitle.innerText = "Terms of Service"; 
+                    legalBody.innerHTML = document.getElementById('content-terms').innerHTML; 
+                } else if(type === 'cookie') { 
+                    legalTitle.innerText = "Cookie Policy"; 
+                    legalBody.innerHTML = document.getElementById('content-cookie').innerHTML; 
+                }
+                legalModal.style.display = "flex"; 
+                document.body.style.overflow = "hidden";
+            });
+        });
+        legalClose.addEventListener('click', () => { legalModal.style.display = "none"; document.body.style.overflow = "auto"; });
 
         // Swipe Hints (JS Logic to only show if scrollable)
         function initSwipe(id, containerId) {
@@ -747,6 +819,7 @@
 
         window.addEventListener('click', (event) => {
             if (event.target === contactModal) { contactModal.style.display = "none"; document.body.style.overflow = "auto"; }
+            if (event.target === legalModal) { legalModal.style.display = "none"; document.body.style.overflow = "auto"; }
         });
     </script>
 </body>
