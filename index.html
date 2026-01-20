@@ -6,6 +6,7 @@
     <title>Core & Pixel | Digital Architects</title>
     
     <link href="https://unpkg.com/aos@2.3.1/dist/aos.css" rel="stylesheet">
+    <script src="https://unpkg.com/lucide@latest"></script>
     
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
@@ -197,6 +198,43 @@
         .project-info h3 { font-size: 1.5rem; margin-bottom: 0.5rem; color: #fff; }
         .project-info p { color: #ccc; margin: 0; line-height: 1.5; font-size: 0.95rem; }
 
+        /* Live Projects Grid */
+        .live-projects-grid {
+            display: grid;
+            grid-template-columns: repeat(3, 1fr);
+            gap: 24px;
+            grid-auto-rows: 400px;
+            margin-bottom: 6rem;
+        }
+
+        .live-project-card {
+            border-radius: 24px; overflow: hidden; position: relative; border: 1px solid var(--border-color);
+            background: #111; cursor: pointer; text-decoration: none; display: flex; flex-direction: column;
+            transition: all 0.3s ease; height: 100%;
+        }
+
+        .live-project-card:hover {
+            transform: translateY(-5px);
+            border-color: rgba(255,255,255,0.2);
+            box-shadow: 0 10px 40px rgba(0,0,0,0.5);
+        }
+
+        .live-project-card .project-img {
+            width: 100%; height: 100%; object-fit: cover; position: absolute; top: 0; left: 0;
+            transition: transform 0.6s cubic-bezier(0.2, 0.8, 0.2, 1); filter: blur(4px);
+        }
+
+        .live-project-card:hover .project-img { transform: scale(1.05); filter: blur(3px); }
+
+        .live-project-card .project-info {
+            position: absolute; bottom: 0; left: 0; width: 100%; padding: 2rem;
+            background: linear-gradient(0deg, rgba(0,0,0,0.95) 0%, rgba(0,0,0,0.6) 50%, transparent 100%);
+            z-index: 2; color: white;
+        }
+
+        .live-featured-project { grid-column: span 2; }
+        .live-small-project { grid-column: span 1; }
+
         /* --- 6. FOOTER & MODALS --- */
         footer { background: #000; padding-top: 5rem; border-top: 1px solid var(--border-color); font-size: 0.9rem; }
         .footer-cta { text-align: center; padding-bottom: 5rem; border-bottom: 1px solid rgba(255,255,255,0.05); margin-bottom: 4rem; }
@@ -242,6 +280,92 @@
         .legal-text::-webkit-scrollbar-track { background: rgba(255,255,255,0.05); }
         .legal-text::-webkit-scrollbar-thumb { background: rgba(255,255,255,0.2); border-radius: 5px; }
 
+        /* --- 7. LIVE PROJECTS CAROUSEL --- */
+        .carousel-section { margin: 8rem 0; overflow: hidden; position: relative; }
+        
+        .carousel-container {
+            position: relative; width: 100%; height: 450px; overflow: hidden;
+            -webkit-mask-image: linear-gradient(90deg, transparent, black 10%, black 90%, transparent);
+            mask-image: linear-gradient(90deg, transparent, black 10%, black 90%, transparent);
+        }
+        
+        .carousel-track {
+            display: flex; gap: 2rem; position: absolute; left: 0;
+            animation: scroll 30s linear infinite; will-change: transform;
+        }
+        
+        .carousel-track:hover { animation-play-state: paused; }
+        
+        @keyframes scroll {
+            0% { transform: translateX(0); }
+            100% { transform: translateX(-33.333%); }
+        }
+        
+        .carousel-card {
+            flex: 0 0 400px; height: 400px; border-radius: 24px; position: relative;
+            overflow: hidden; cursor: default; border: 1px solid var(--border-color);
+            transition: all 0.4s cubic-bezier(0.25, 0.8, 0.25, 1);
+        }
+        
+        .carousel-card:hover {
+            transform: none;
+            border-color: var(--border-color);
+            box-shadow: none;
+        }
+        
+        .carousel-card-bg {
+            position: absolute; top: 0; left: 0; width: 100%; height: 100%;
+            display: flex; align-items: center; justify-content: center;
+            background: linear-gradient(135deg, rgba(112, 0, 255, 0.1), rgba(0, 224, 255, 0.05));
+            transition: all 0.6s cubic-bezier(0.25, 0.8, 0.25, 1);
+        }
+        
+        .carousel-card-bg svg {
+            width: 120px; height: 120px; opacity: 0.5; stroke: var(--accent-cyan);
+            transition: all 0.6s cubic-bezier(0.25, 0.8, 0.25, 1);
+            filter: drop-shadow(0 0 20px rgba(0, 224, 255, 0.4));
+        }
+        
+        .carousel-card:hover .carousel-card-bg {
+            background: linear-gradient(135deg, rgba(112, 0, 255, 0.1), rgba(0, 224, 255, 0.05));
+        }
+        
+        .carousel-card:hover .carousel-card-bg svg {
+            opacity: 0.5; transform: none; filter: drop-shadow(0 0 20px rgba(0, 224, 255, 0.4));
+        }
+        
+        .carousel-card-overlay {
+            position: absolute; top: 0; left: 0; width: 100%; height: 100%;
+            background: linear-gradient(180deg, rgba(0,0,0,0.3) 0%, rgba(0,0,0,0.8) 100%);
+            display: flex; flex-direction: column; justify-content: flex-end;
+            padding: 2rem; z-index: 2;
+        }
+        
+        .carousel-card-tag {
+            font-family: var(--font-code); font-size: 0.75rem; color: var(--accent-cyan);
+            margin-bottom: 0.5rem; text-transform: uppercase; letter-spacing: 1px;
+        }
+        
+        .carousel-card h3 {
+            font-size: 1.8rem; font-weight: 700; color: #fff; margin-bottom: 0.5rem;
+            transition: transform 0.3s ease;
+        }
+        
+        .carousel-card:hover h3 { transform: translateX(5px); }
+        
+        .carousel-card p {
+            color: #ccc; font-size: 0.95rem; line-height: 1.6; margin: 0;
+            opacity: 0.9;
+        }
+        
+        .carousel-hover-zone {
+            position: absolute; top: 0; width: 150px; height: 100%; z-index: 10;
+            pointer-events: all; opacity: 0;
+        }
+        
+        .carousel-hover-zone.left { left: 0; }
+        .carousel-hover-zone.right { right: 0; }
+
         @media (max-width: 900px) {
             .bento-grid { grid-template-columns: 1fr; }
             .project-grid { grid-template-columns: 1fr; }
@@ -249,6 +373,8 @@
             .hero h1 { font-size: 3rem; }
             .footer-grid { grid-template-columns: 1fr; gap: 2rem; }
             .footer-bottom { flex-direction: column; gap: 1rem; text-align: center; }
+            .carousel-card { flex: 0 0 320px; height: 350px; }
+            .carousel-container { height: 380px; }
         }
     </style>
 </head>
@@ -258,6 +384,7 @@
 
     <nav>
         <a href="index.html" class="logo">Core <span>& Pixel</span></a>
+        <button class="btn-primary modal-trigger">Start a Conversation</button>
     </nav>
 
     <header class="hero">
@@ -346,6 +473,38 @@
         </div>
 
         <div id="work" class="section-header" data-aos="fade-up">
+            <h2>Live Projects</h2>
+            <p>// CURRENTLY IN PRODUCTION</p>
+        </div>
+
+        <div class="live-projects-grid">
+            <a href="https://www.quensultingai.com/" target="_blank" class="live-project-card live-featured-project overlay-style" data-aos="fade-up">
+                <img src="assets/client3.png" class="project-img" alt="Quesulting">
+                <div class="project-info">
+                    <span style="color: var(--accent-cyan); font-family: var(--font-code); font-size: 0.9rem;">LIVE PROJECT</span>
+                    <h3>Quesulting</h3>
+                    <p>Front for an AI infrastructure setup company. Latest graphics icons and design to display our best work in UI.</p>
+                </div>
+            </a>
+
+            <a href="https://www.iiassustain.com/" target="_blank" class="live-project-card live-small-project overlay-style" data-aos="fade-up" data-aos-delay="100">
+                <img src="assets/client1.png" class="project-img" alt="IiAS Sustain">
+                <div class="project-info">
+                    <h3>IiAS Sustain</h3>
+                    <p style="color: #ccc;">ESG Portal for viewing and analysing funds and companies and delivering reports.</p>
+                </div>
+            </a>
+
+            <a href="https://www.iiasadrian.com/" target="_blank" class="live-project-card live-small-project overlay-style" data-aos="fade-up" data-aos-delay="200">
+                <img src="assets/client2.png" class="project-img" alt="Adrian">
+                <div class="project-info">
+                    <h3>Adrian</h3>
+                    <p style="color: #ccc;">SaaS tool subscription model allows users to filter access data and provides platform.</p>
+                </div>
+            </a>
+        </div>
+
+        <div id="work" class="section-header" data-aos="fade-up">
             <h2>Selected Work</h2>
             <p>// RECENT DEPLOYMENTS</p>
         </div>
@@ -376,6 +535,261 @@
                 </div>
             </a>
         </div>
+
+        <!-- Live Projects Carousel Section -->
+        <div class="carousel-section">
+            <div class="section-header" data-aos="fade-up">
+                <h2>Our Deliverables</h2>
+                <p>// FULL-SPECTRUM DEVELOPMENT EXPERTISE</p>
+            </div>
+
+            <div class="carousel-container" id="carouselContainer">
+                <div class="carousel-hover-zone left" id="hoverLeft"></div>
+                <div class="carousel-hover-zone right" id="hoverRight"></div>
+                
+                <div class="carousel-track" id="carouselTrack">
+                    <!-- System Architecture -->
+                    <div class="carousel-card">
+                        <div class="carousel-card-bg">
+                            <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"><polyline points="12 3 20 7.5 20 16.5 12 21 4 16.5 4 7.5 12 3"></polyline><polyline points="12 12 20 7.5"></polyline><polyline points="12 12 12 21"></polyline><polyline points="12 12 4 7.5"></polyline></svg>
+                        </div>
+                        <div class="carousel-card-overlay">
+                            <div class="carousel-card-tag">Architecture</div>
+                            <h3>System Architecture</h3>
+                            <p>Enterprise-grade scalable architecture with microservices, containerization, and distributed system design patterns.</p>
+                        </div>
+                    </div>
+                    
+                    <!-- Cloud Infrastructure -->
+                    <div class="carousel-card">
+                        <div class="carousel-card-bg">
+                            <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"><path d="M17.5 21H9a7 7 0 1 1 6.71-9h1.79a4.5 4.5 0 1 1 0 9z"></path></svg>
+                        </div>
+                        <div class="carousel-card-overlay">
+                            <div class="carousel-card-tag">Cloud Ops</div>
+                            <h3>Cloud Infrastructure</h3>
+                            <p>AWS, Azure & GCP deployment optimization with auto-scaling, CDN, and disaster recovery strategies.</p>
+                        </div>
+                    </div>
+                    
+                    <!-- Frontend Development -->
+                    <div class="carousel-card">
+                        <div class="carousel-card-bg">
+                            <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"><polyline points="16 16 12 12 8 16"></polyline><line x1="12" y1="12" x2="12" y2="21"></line><path d="M20.39 18.39A5 5 0 0 0 18 9h-1.26A8 8 0 1 0 3 16.3"></path></svg>
+                        </div>
+                        <div class="carousel-card-overlay">
+                            <div class="carousel-card-tag">Frontend</div>
+                            <h3>Frontend Development</h3>
+                            <p>React, Next.js, Vue & modern frameworks with performance optimization and responsive design principles.</p>
+                        </div>
+                    </div>
+
+                    <!-- Backend Development -->
+                    <div class="carousel-card">
+                        <div class="carousel-card-bg">
+                            <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"><polyline points="23 6 13.5 15.5 8.5 10.5 1 17"></polyline><polyline points="17 6 23 6 23 12"></polyline></svg>
+                        </div>
+                        <div class="carousel-card-overlay">
+                            <div class="carousel-card-tag">Backend</div>
+                            <h3>Backend Development</h3>
+                            <p>Node.js, Python, Go with robust API design, GraphQL, REST, and event-driven architecture implementation.</p>
+                        </div>
+                    </div>
+                    
+                    <!-- Data Pipeline Management -->
+                    <div class="carousel-card">
+                        <div class="carousel-card-bg">
+                            <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"><ellipse cx="12" cy="5" rx="9" ry="3"></ellipse><path d="M3 5v14a9 3 0 0 0 18 0V5"></path></svg>
+                        </div>
+                        <div class="carousel-card-overlay">
+                            <div class="carousel-card-tag">Data Ops</div>
+                            <h3>Data Pipeline Management</h3>
+                            <p>ETL workflows, real-time analytics, data warehousing with Kafka, Spark, and BI integration solutions.</p>
+                        </div>
+                    </div>
+                    
+                    <!-- UI/UX Design -->
+                    <div class="carousel-card">
+                        <div class="carousel-card-bg">
+                            <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"><circle cx="13.5" cy="6.5" r=".5" fill="currentColor"></circle><circle cx="17.5" cy="10.5" r=".5" fill="currentColor"></circle><circle cx="8.5" cy="7.5" r=".5" fill="currentColor"></circle><circle cx="6.5" cy="12.5" r=".5" fill="currentColor"></circle><path d="M12 2C6.48 2 2 6.48 2 12s4.48 10 10 10 10-4.48 10-10S17.52 2 12 2m0 18c-4.41 0-8-3.59-8-8s3.59-8 8-8 8 3.59 8 8-3.59 8-8 8"></path></svg>
+                        </div>
+                        <div class="carousel-card-overlay">
+                            <div class="carousel-card-tag">Design</div>
+                            <h3>UI/UX Design</h3>
+                            <p>Design systems, interactive prototyping in Figma, interaction design, and accessibility compliance.</p>
+                        </div>
+                    </div>
+
+                    <!-- UX Research -->
+                    <div class="carousel-card">
+                        <div class="carousel-card-bg">
+                            <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"><path d="M17 21v-2a4 4 0 0 0-4-4H5a4 4 0 0 0-4 4v2"></path><circle cx="9" cy="7" r="4"></circle><path d="M23 21v-2a4 4 0 0 0-3-3.87"></path><path d="M16 3.13a4 4 0 0 1 0 7.75"></path></svg>
+                        </div>
+                        <div class="carousel-card-overlay">
+                            <div class="carousel-card-tag">Research</div>
+                            <h3>UX Research</h3>
+                            <p>User testing, interviews, behavioral analysis, and data-driven insights for informed design decisions.</p>
+                        </div>
+                    </div>
+
+                    <!-- Duplicates for seamless loop -->
+                    <div class="carousel-card">
+                        <div class="carousel-card-bg">
+                            <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"><rect x="3" y="3" width="7" height="7"></rect><rect x="14" y="3" width="7" height="7"></rect><rect x="14" y="14" width="7" height="7"></rect><rect x="3" y="14" width="7" height="7"></rect></svg>
+                        </div>
+                        <div class="carousel-card-overlay">
+                            <div class="carousel-card-tag">Architecture</div>
+                            <h3>System Architecture</h3>
+                            <p>Enterprise-grade scalable architecture with microservices, containerization, and distributed system design patterns.</p>
+                        </div>
+                    </div>
+                    
+                    <div class="carousel-card">
+                        <div class="carousel-card-bg">
+                            <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"><path d="M17.5 21H9a7 7 0 1 1 6.71-9h1.79a4.5 4.5 0 1 1 0 9z"></path></svg>
+                        </div>
+                        <div class="carousel-card-overlay">
+                            <div class="carousel-card-tag">Cloud Ops</div>
+                            <h3>Cloud Infrastructure</h3>
+                            <p>AWS, Azure & GCP deployment optimization with auto-scaling, CDN, and disaster recovery strategies.</p>
+                        </div>
+                    </div>
+                    
+                    <div class="carousel-card">
+                        <div class="carousel-card-bg">
+                            <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"><polyline points="16 16 12 12 8 16"></polyline><line x1="12" y1="12" x2="12" y2="21"></line><path d="M20.39 18.39A5 5 0 0 0 18 9h-1.26A8 8 0 1 0 3 16.3"></path></svg>
+                        </div>
+                        <div class="carousel-card-overlay">
+                            <div class="carousel-card-tag">Frontend</div>
+                            <h3>Frontend Development</h3>
+                            <p>React, Next.js, Vue & modern frameworks with performance optimization and responsive design principles.</p>
+                        </div>
+                    </div>
+
+                    <div class="carousel-card">
+                        <div class="carousel-card-bg">
+                            <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"><polyline points="23 6 13.5 15.5 8.5 10.5 1 17"></polyline><polyline points="17 6 23 6 23 12"></polyline></svg>
+                        </div>
+                        <div class="carousel-card-overlay">
+                            <div class="carousel-card-tag">Backend</div>
+                            <h3>Backend Development</h3>
+                            <p>Node.js, Python, Go with robust API design, GraphQL, REST, and event-driven architecture implementation.</p>
+                        </div>
+                    </div>
+                    
+                    <div class="carousel-card">
+                        <div class="carousel-card-bg">
+                            <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"><ellipse cx="12" cy="5" rx="9" ry="3"></ellipse><path d="M3 5v14a9 3 0 0 0 18 0V5"></path></svg>
+                        </div>
+                        <div class="carousel-card-overlay">
+                            <div class="carousel-card-tag">Data Ops</div>
+                            <h3>Data Pipeline Management</h3>
+                            <p>ETL workflows, real-time analytics, data warehousing with Kafka, Spark, and BI integration solutions.</p>
+                        </div>
+                    </div>
+                    
+                    <div class="carousel-card">
+                        <div class="carousel-card-bg">
+                            <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"><circle cx="13.5" cy="6.5" r=".5" fill="currentColor"></circle><circle cx="17.5" cy="10.5" r=".5" fill="currentColor"></circle><circle cx="8.5" cy="7.5" r=".5" fill="currentColor"></circle><circle cx="6.5" cy="12.5" r=".5" fill="currentColor"></circle><path d="M12 2C6.48 2 2 6.48 2 12s4.48 10 10 10 10-4.48 10-10S17.52 2 12 2m0 18c-4.41 0-8-3.59-8-8s3.59-8 8-8 8 3.59 8 8-3.59 8-8 8"></path></svg>
+                        </div>
+                        <div class="carousel-card-overlay">
+                            <div class="carousel-card-tag">Design</div>
+                            <h3>UI/UX Design</h3>
+                            <p>Design systems, interactive prototyping in Figma, interaction design, and accessibility compliance.</p>
+                        </div>
+                    </div>
+
+                    <div class="carousel-card">
+                        <div class="carousel-card-bg">
+                            <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"><path d="M17 21v-2a4 4 0 0 0-4-4H5a4 4 0 0 0-4 4v2"></path><circle cx="9" cy="7" r="4"></circle><path d="M23 21v-2a4 4 0 0 0-3-3.87"></path><path d="M16 3.13a4 4 0 0 1 0 7.75"></path></svg>
+                        </div>
+                        <div class="carousel-card-overlay">
+                            <div class="carousel-card-tag">Research</div>
+                            <h3>UX Research</h3>
+                            <p>User testing, interviews, behavioral analysis, and data-driven insights for informed design decisions.</p>
+                        </div>
+                    </div>
+
+                    <!-- Third set for smooth infinite scroll -->
+                    <div class="carousel-card">
+                        <div class="carousel-card-bg">
+                            <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"><rect x="3" y="3" width="7" height="7"></rect><rect x="14" y="3" width="7" height="7"></rect><rect x="14" y="14" width="7" height="7"></rect><rect x="3" y="14" width="7" height="7"></rect></svg>
+                        </div>
+                        <div class="carousel-card-overlay">
+                            <div class="carousel-card-tag">Architecture</div>
+                            <h3>System Architecture</h3>
+                            <p>Enterprise-grade scalable architecture with microservices, containerization, and distributed system design patterns.</p>
+                        </div>
+                    </div>
+                    
+                    <div class="carousel-card">
+                        <div class="carousel-card-bg">
+                            <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"><path d="M17.5 21H9a7 7 0 1 1 6.71-9h1.79a4.5 4.5 0 1 1 0 9z"></path></svg>
+                        </div>
+                        <div class="carousel-card-overlay">
+                            <div class="carousel-card-tag">Cloud Ops</div>
+                            <h3>Cloud Infrastructure</h3>
+                            <p>AWS, Azure & GCP deployment optimization with auto-scaling, CDN, and disaster recovery strategies.</p>
+                        </div>
+                    </div>
+                    
+                    <div class="carousel-card">
+                        <div class="carousel-card-bg">
+                            <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"><polyline points="16 16 12 12 8 16"></polyline><line x1="12" y1="12" x2="12" y2="21"></line><path d="M20.39 18.39A5 5 0 0 0 18 9h-1.26A8 8 0 1 0 3 16.3"></path></svg>
+                        </div>
+                        <div class="carousel-card-overlay">
+                            <div class="carousel-card-tag">Frontend</div>
+                            <h3>Frontend Development</h3>
+                            <p>React, Next.js, Vue & modern frameworks with performance optimization and responsive design principles.</p>
+                        </div>
+                    </div>
+
+                    <div class="carousel-card">
+                        <div class="carousel-card-bg">
+                            <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"><polyline points="23 6 13.5 15.5 8.5 10.5 1 17"></polyline><polyline points="17 6 23 6 23 12"></polyline></svg>
+                        </div>
+                        <div class="carousel-card-overlay">
+                            <div class="carousel-card-tag">Backend</div>
+                            <h3>Backend Development</h3>
+                            <p>Node.js, Python, Go with robust API design, GraphQL, REST, and event-driven architecture implementation.</p>
+                        </div>
+                    </div>
+                    
+                    <div class="carousel-card">
+                        <div class="carousel-card-bg">
+                            <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"><ellipse cx="12" cy="5" rx="9" ry="3"></ellipse><path d="M3 5v14a9 3 0 0 0 18 0V5"></path></svg>
+                        </div>
+                        <div class="carousel-card-overlay">
+                            <div class="carousel-card-tag">Data Ops</div>
+                            <h3>Data Pipeline Management</h3>
+                            <p>ETL workflows, real-time analytics, data warehousing with Kafka, Spark, and BI integration solutions.</p>
+                        </div>
+                    </div>
+                    
+                    <div class="carousel-card">
+                        <div class="carousel-card-bg">
+                            <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"><circle cx="13.5" cy="6.5" r=".5" fill="currentColor"></circle><circle cx="17.5" cy="10.5" r=".5" fill="currentColor"></circle><circle cx="8.5" cy="7.5" r=".5" fill="currentColor"></circle><circle cx="6.5" cy="12.5" r=".5" fill="currentColor"></circle><path d="M12 2C6.48 2 2 6.48 2 12s4.48 10 10 10 10-4.48 10-10S17.52 2 12 2m0 18c-4.41 0-8-3.59-8-8s3.59-8 8-8 8 3.59 8 8-3.59 8-8 8"></path></svg>
+                        </div>
+                        <div class="carousel-card-overlay">
+                            <div class="carousel-card-tag">Design</div>
+                            <h3>UI/UX Design</h3>
+                            <p>Design systems, interactive prototyping in Figma, interaction design, and accessibility compliance.</p>
+                        </div>
+                    </div>
+
+                    <div class="carousel-card">
+                        <div class="carousel-card-bg">
+                            <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"><path d="M17 21v-2a4 4 0 0 0-4-4H5a4 4 0 0 0-4 4v2"></path><circle cx="9" cy="7" r="4"></circle><path d="M23 21v-2a4 4 0 0 0-3-3.87"></path><path d="M16 3.13a4 4 0 0 1 0 7.75"></path></svg>
+                        </div>
+                        <div class="carousel-card-overlay">
+                            <div class="carousel-card-tag">Research</div>
+                            <h3>UX Research</h3>
+                            <p>User testing, interviews, behavioral analysis, and data-driven insights for informed design decisions.</p>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
     </div>
 
     <footer id="contact">
@@ -383,23 +797,64 @@
             <h2 style="font-size: 2.5rem; color: white; margin-bottom: 2rem;">Ready to build?</h2>
             <button class="btn-primary modal-trigger">Start a Conversation</button>
         </div>
+
         <div class="footer-grid">
             <div class="footer-col">
                 <div class="logo" style="margin-bottom: 1rem;">Core <span>& Pixel</span></div>
-                <p style="color: #888; line-height: 1.6;">Digital architects building the future of web and software. Based in NYC, working globally.</p>
+                <p style="color: #888; line-height: 1.6;">Digital architects building the future of web and software. Based in Germany, working globally.</p>
+                <p style="color: #888; margin-top: 1rem;"><a href="https://outlook.live.com/owa/?path=/mail/action/compose&to=coreandpixel@gmail.com" target="_blank" style="color: #00e0ff; text-decoration: none;">coreandpixel@gmail.com</a></p>
             </div>
-            <div class="footer-col"><h4>Sitemap</h4><ul><li><a href="index.html#work">Work</a></li><li><a href="#">Services</a></li><li><a href="#">Process</a></li><li><a href="#">About</a></li></ul></div>
-            <div class="footer-col"><h4>Socials</h4><ul><li><a href="https://github.com/CoreandPixel" target="_blank">GitHub</a></li><li><a href="https://www.behance.net/priyanshu_rai" target="_blank">Behance</a></li></ul></div>
-            <div class="footer-col"><h4>Legal</h4><ul><li><a class="legal-trigger" data-type="privacy">Privacy Policy</a></li><li><a class="legal-trigger" data-type="terms">Terms of Service</a></li><li><a class="legal-trigger" data-type="cookie">Cookie Policy</a></li></ul></div>
+            <div class="footer-col">
+                <h4>Sitemap</h4>
+                <ul><li><a href="index.html#work">Work</a></li><li><a href="index.html#services">Services</a></li><li><a href="#">Process</a></li><li><a class="legal-trigger" data-type="about">About</a></li></ul>
+            </div>
+            <div class="footer-col">
+                <h4>Socials</h4>
+                <ul>
+                    <li><a href="https://github.com/CoreandPixel" target="_blank">GitHub</a></li>
+                    <li><a href="https://www.behance.net/priyanshu_rai" target="_blank">Behance</a></li>
+                </ul>
+            </div>
+            <div class="footer-col">
+                <h4>Legal</h4>
+                <ul>
+                    <li><a class="legal-trigger" data-type="privacy">Privacy Policy</a></li>
+                    <li><a class="legal-trigger" data-type="terms">Terms of Service</a></li>
+                    <li><a class="legal-trigger" data-type="cookie">Cookie Policy</a></li>
+                </ul>
+            </div>
         </div>
-        <div class="footer-bottom"><div>&copy; 2024 Core & Pixel. All rights reserved.</div><div>Designed & Engineered In-House.</div></div>
+        <div class="footer-bottom">
+            <div>&copy; 2024 Core & Pixel. All rights reserved.</div>
+            <div>Designed & Engineered In-House.</div>
+        </div>
     </footer>
 
-    <div id="contactModal" class="modal"><div class="modal-content"><span class="close-btn">&times;</span><h2 style="margin-bottom: 0.5rem; color: #fff;">Let's Talk</h2><p style="color: #999; margin-bottom: 2rem;">Tell us about your project.</p><form action="https://api.web3forms.com/submit" method="POST"><input type="hidden" name="access_key" value="eaf9988e-32a5-49d9-9d9c-05e2188fa8d3"><div class="form-group"><label class="form-label">Name</label><input type="text" name="name" class="form-input" required placeholder="John Doe"></div><div class="form-group"><label class="form-label">Email</label><input type="email" name="email" class="form-input" required placeholder="john@company.com"></div><div class="form-group"><label class="form-label">Message</label><textarea name="message" class="form-textarea" required placeholder="I need a website that..."></textarea></div><input type="checkbox" name="botcheck" class="hidden" style="display: none;"><button type="submit" class="btn-primary" style="width: 100%; border: none;">Send Message</button></form></div></div>
+    <div id="contactModal" class="modal"><div class="modal-content"><span class="close-btn">&times;</span><h2 style="margin-bottom: 0.5rem; color: #fff;">Let's Talk</h2><p style="color: #999; margin-bottom: 1rem;">Tell us about your project.</p><p style="color: #00e0ff; margin-bottom: 2rem;"><a href="https://outlook.live.com/owa/?path=/mail/action/compose&to=coreandpixel@gmail.com" target="_blank" style="color: #00e0ff; text-decoration: none;">coreandpixel@gmail.com</a></p><form action="https://api.web3forms.com/submit" method="POST"><input type="hidden" name="access_key" value="eaf9988e-32a5-49d9-9d9c-05e2188fa8d3"><div class="form-group"><label class="form-label">Name</label><input type="text" name="name" class="form-input" required placeholder="John Doe"></div><div class="form-group"><label class="form-label">Email</label><input type="email" name="email" class="form-input" required placeholder="john@company.com"></div><div class="form-group"><label class="form-label">Message</label><textarea name="message" class="form-textarea" required placeholder="I need a website that..."></textarea></div><input type="checkbox" name="botcheck" class="hidden" style="display: none;"><button type="submit" class="btn-primary" style="width: 100%; border: none;">Send Message</button></form></div></div>
     
     <div id="legalModal" class="modal"><div class="modal-content"><span class="close-btn" id="closeLegal">&times;</span><h2 id="legalTitle" style="color:#fff; margin-bottom:1rem;">Policy Title</h2><div id="legalBody" class="legal-text" style="color:#ccc; line-height:1.6;"></div></div></div>
     
     <div style="display:none;">
+        <div id="content-about">
+            <p><strong>About Core & Pixel</strong></p>
+            <p>Founded in 2024 by two visionary friends, Core & Pixel is an unregistered startup on a mission to revolutionize how businesses solve their most complex technology challenges. What began as a passion project has evolved into a comprehensive tech solutions provider dedicated to bridging the gap between business problems and elegant technical implementations.</p>
+            
+            <h3>Our Story</h3>
+            <p>Born from the frustration of seeing businesses struggle with outdated technology infrastructure and poor user experiences, we decided to take action. Armed with years of collective experience in software architecture, product design, and cloud systems, we created Core & Pixel to be the tech partner businesses didn't know they needed.</p>
+            
+            <h3>What We Do</h3>
+            <p>We provide end-to-end technology solutions across the entire software development lifecycle. From initial architecture design to deployment and optimization, we handle every aspect of your tech stack with meticulous attention to detail and a focus on scalability.</p>
+            
+            <h3>Our Specializations</h3>
+            <p><strong>Web Development:</strong> We build modern, responsive web applications using cutting-edge frameworks like React, Next.js, and Vue. Every pixel is crafted with purpose, combining beautiful design with bulletproof functionality.</p>
+            <p><strong>Cloud Infrastructure:</strong> We specialize in architecting and managing robust cloud solutions on AWS, Azure, and GCP. Our expertise in auto-scaling, disaster recovery, and cost optimization ensures your infrastructure works as hard as you do.</p>
+            
+            <h3>Our Approach</h3>
+            <p>We believe the best solutions come from understanding both the business problem and the technical landscape. We don't just build—we partner with you to create systems that drive real business value. Our cross-functional expertise spans system architecture, backend development, frontend engineering, UX research, and data infrastructure.</p>
+            
+            <h3>Why Core & Pixel</h3>
+            <p>In a world of one-trick ponies, we're your full-spectrum tech partner. Whether you need a complete system redesign, cloud migration, new web platform, or data infrastructure, we bring the same level of dedication and excellence to every project. We're small enough to care about details, experienced enough to handle complexity.</p>
+        </div>
         <div id="content-privacy">
             <p><strong>Effective Date: Jan 2024</strong></p>
             <p>At Core & Pixel, we respect your privacy. This Privacy Policy explains how we collect, use, and protect your information.</p>
@@ -426,6 +881,9 @@
 
     <script src="https://unpkg.com/aos@2.3.1/dist/aos.js"></script>
     <script>
+        // Initialize Lucide icons
+        lucide.createIcons();
+        
         AOS.init({ once: true, offset: 50, duration: 800 });
 
         // Contact Modal Logic
@@ -446,7 +904,10 @@
             btn.addEventListener('click', (e) => {
                 e.preventDefault();
                 const type = btn.getAttribute('data-type');
-                if(type === 'privacy') { 
+                if(type === 'about') { 
+                    legalTitle.innerText = "About Core & Pixel"; 
+                    legalBody.innerHTML = document.getElementById('content-about').innerHTML; 
+                } else if(type === 'privacy') { 
                     legalTitle.innerText = "Privacy Policy"; 
                     legalBody.innerHTML = document.getElementById('content-privacy').innerHTML; 
                 } else if(type === 'terms') { 
@@ -485,6 +946,35 @@
         window.addEventListener('click', (event) => {
             if (event.target === contactModal) { contactModal.classList.remove("active"); document.body.style.overflow = "auto"; }
             if (event.target === legalModal) { legalModal.classList.remove("active"); document.body.style.overflow = "auto"; }
+        });
+
+        // Carousel Edge Hover Logic
+        const carouselTrack = document.getElementById('carouselTrack');
+        const hoverLeft = document.getElementById('hoverLeft');
+        const hoverRight = document.getElementById('hoverRight');
+        let hoverInterval = null;
+        let baseSpeed = 30; // seconds for full cycle
+
+        function setCarouselSpeed(speed) {
+            carouselTrack.style.animationDuration = speed + 's';
+        }
+
+        hoverLeft.addEventListener('mouseenter', () => {
+            setCarouselSpeed(15); // Speed up to go left (reverse direction)
+            carouselTrack.style.animationDirection = 'reverse';
+        });
+
+        hoverLeft.addEventListener('mouseleave', () => {
+            setCarouselSpeed(baseSpeed);
+            carouselTrack.style.animationDirection = 'normal';
+        });
+
+        hoverRight.addEventListener('mouseenter', () => {
+            setCarouselSpeed(15); // Speed up to go right
+        });
+
+        hoverRight.addEventListener('mouseleave', () => {
+            setCarouselSpeed(baseSpeed);
         });
     </script>
 </body>
